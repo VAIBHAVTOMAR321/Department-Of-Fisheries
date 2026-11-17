@@ -20,6 +20,7 @@ import {
   ClipboardList,
 } from "lucide-react";
 import "./DashboardLayout.css";
+import LogoImage from "../components/LogoImage.jsx";
 const links = [
   ["Overview", "/app", LayoutDashboard],
   ["Fish listings", "/app/listings", Fish],
@@ -57,7 +58,7 @@ export default function DashboardLayout({ user, onLogout, onRoleChange }) {
       <aside className="dash-sidebar">
         <Link className="brand side-brand" to="/">
           <span className="brand-mark">
-            <Fish />
+            <LogoImage />
           </span>
           <span>
             Department of Fisheries

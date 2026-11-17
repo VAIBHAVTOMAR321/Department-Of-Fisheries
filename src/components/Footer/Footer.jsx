@@ -1,7 +1,8 @@
 import React from "react";
-import { Fish, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Footer.css";
+import LogoImage from "../LogoImage.jsx";
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -9,7 +10,7 @@ export default function Footer() {
         <div className="footer-brand">
           <div className="brand footer-logo">
             <span className="brand-mark">
-              <Fish />
+              <LogoImage />
             </span>
             <span>Department of Fisheries</span>
           </div>

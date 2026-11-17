@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import LogoImage from "./LogoImage.jsx";
 
 function BrandMark({ light = false }) {
   return (
@@ -7,9 +8,7 @@ function BrandMark({ light = false }) {
       to="/"
       aria-label="Department of Fisheries, Uttarakhand home"
     >
-      <span className="brand-icon" aria-hidden="true">
-        <i className="bi bi-water" />
-      </span>
+      <LogoImage className="brand-logo-image" />
       <span className="brand-name">
         Department of Fisheries
         <small>UTTARAKHAND</small>
