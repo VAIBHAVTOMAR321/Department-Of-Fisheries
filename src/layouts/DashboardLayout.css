@@ -27,8 +27,24 @@
 }
 .side-links {
   display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
   flex-direction: column;
   gap: 5px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: #b7ceca transparent;
+  scrollbar-width: thin;
+}
+.side-links::-webkit-scrollbar {
+  width: 6px;
+}
+.side-links::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background: #b7ceca;
+}
+.side-links::-webkit-scrollbar-track {
+  background: transparent;
 }
 .side-links a {
   display: flex;
