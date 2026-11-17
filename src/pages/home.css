@@ -610,7 +610,7 @@ a.product-title{
     display: grid;
     grid-template-columns: minmax(180px, 215px) minmax(0, 1fr) minmax(180px, 215px);
     gap: 28px;
-    min-height: 620px;
+    min-height: 500px;
     align-items: center;
   }
   .dept-leader-card {
