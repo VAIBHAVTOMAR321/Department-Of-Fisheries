@@ -1,5 +1,10 @@
 import { useState } from "react";
 import { getContactRequests, saveContactRequests } from "../utils/store.js";
+import {
+  departmentAddress,
+  departmentMapEmbedUrl,
+  departmentMapUrl,
+} from "../data/departmentContact.js";
 
 const CONTACT_EMAIL = "info.fisheriesuk@gmail.com";
 const CONTACT_PHONE = "+91 98765 43XXXX";
@@ -51,8 +56,13 @@ function Contact() {
             <div className="contact-method">
               <i className="bi bi-geo-alt" />
               <span>
-                <strong>For local fisheries information</strong>
-                <small>Contact the fisheries office serving your district in Uttarakhand.</small>
+                <strong>Department address</strong>
+                <a href={departmentMapUrl} target="_blank" rel="noreferrer">
+                  {departmentAddress}
+                </a>
+                <a href={departmentMapUrl} target="_blank" rel="noreferrer">
+                  View on Google Maps
+                </a>
               </span>
             </div>
             <div className="contact-method">
@@ -138,6 +148,23 @@ function Contact() {
             </div>
           </div>
         </div>
+        <section className="department-map-section" aria-label="Department location map">
+          <div>
+            <span className="eyebrow">FIND THE DEPARTMENT</span>
+            <h2>Visit us in Dehradun</h2>
+            <p>{departmentAddress}</p>
+            <a href={departmentMapUrl} target="_blank" rel="noreferrer">
+              Open in Google Maps <i className="bi bi-arrow-up-right" />
+            </a>
+          </div>
+          <iframe
+            title="Department of Fisheries location in Google Maps"
+            src={departmentMapEmbedUrl}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            allowFullScreen
+          />
+        </section>
       </div>
     </div>
   );

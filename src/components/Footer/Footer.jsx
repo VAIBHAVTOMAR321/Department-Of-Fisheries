@@ -3,6 +3,7 @@ import { MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 import "./Footer.css";
 import LogoImage from "../LogoImage.jsx";
+import { departmentAddress, departmentMapUrl } from "../../data/departmentContact.js";
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -33,9 +34,15 @@ export default function Footer() {
         </div>
         <div>
           <h4>Location</h4>
-          <p>
-            <MapPin size={14} /> Uttarakhand, India
-          </p>
+          <a
+            className="footer-address"
+            href={departmentMapUrl}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <MapPin size={14} />
+            <span>{departmentAddress}</span>
+          </a>
         </div>
       </div>
       <div className="footer-bottom">

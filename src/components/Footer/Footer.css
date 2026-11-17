@@ -42,6 +42,15 @@
 .footer-main a:hover {
   color: #55d5c1;
 }
+.footer-main a.footer-address {
+  max-width: 260px;
+  align-items: flex-start;
+  line-height: 1.6;
+}
+.footer-address > svg {
+  flex: 0 0 auto;
+  margin-top: 2px;
+}
 .footer-bottom {
   border-top: 1px solid #ffffff19;
   padding-top: 18px;
