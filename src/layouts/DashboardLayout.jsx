@@ -58,7 +58,7 @@ export default function DashboardLayout({ user, onLogout, onRoleChange }) {
   return (
     <div className="dash-shell">
       <aside className="dash-sidebar">
-        <Link className="brand side-brand" to="/">
+        <Link className="brand side-brand" to="">
           <span className="brand-mark">
             <LogoImage />
           </span>
