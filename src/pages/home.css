@@ -223,7 +223,7 @@
 .shop-results .product-image-wrap { height: clamp(165px,19vw,225px); }
 .categories-page .section-space { padding-top: 54px; }
 .category-page-banner { min-height: 235px; }
-.category-feature-card { position: relative; display: block; min-height: 315px; overflow: hidden; background: #dce5de; color: white; }
+.category-feature-card { position: relative; display: block; width: 100%; min-height: 315px; overflow: hidden; padding: 0; border: 0; background: #dce5de; color: white; text-align: left; cursor: pointer; }
 .category-feature-card::after { position: absolute; inset: 25% 0 0; background: linear-gradient(0deg,#142c2ae8,transparent); content: ""; }
 .category-feature-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; }
 .category-feature-copy { position: absolute; z-index: 1; right: 25px; bottom: 25px; left: 25px; }
@@ -233,6 +233,28 @@
 .category-life-stages { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
 .category-life-stages span { padding: 4px 7px; border: 1px solid #ffffff73; border-radius: 2px; color: #fff; background: #173a3973; font-size: 9px; }
 .category-feature-copy strong { font-size: 10px; }
+.category-feature-card:focus-visible { outline: 3px solid #087f7a; outline-offset: 3px; }
+.species-detail-hero { display: grid; min-height: 430px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: #f3f7f2; }
+.species-detail-image { position: relative; min-height: 430px; overflow: hidden; background: #dce5de; }
+.species-detail-image::after { position: absolute; inset: 45% 0 0; background: linear-gradient(0deg,#142c2a8c,transparent); content: ""; }
+.species-detail-image img { display: block; width: 100%; height: 100%; min-height: 430px; object-fit: cover; }
+.species-detail-image > span { position: absolute; z-index: 1; bottom: 24px; left: 30px; color: #fff; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; }
+.species-detail-copy { align-self: center; padding: 38px clamp(25px, 5vw, 75px); }
+.species-back-link { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 27px; padding: 0; border: 0; color: #53766b; background: transparent; font-size: 10px; font-weight: 700; cursor: pointer; }
+.species-back-link:hover { color: #087f7a; }
+.species-detail-copy .eyebrow { margin-bottom: 8px; }
+.species-detail-copy h1 { margin: 0 0 10px; color: #183f49; font: 800 clamp(32px, 4vw, 46px)/1.15 Manrope, sans-serif; }
+.species-detail-copy > p { max-width: 430px; color: #71847b; font-size: 12px; line-height: 1.8; }
+.species-scientific-name { color: #87958e; font-size: 9px; }
+.species-scientific-name em { margin-left: 5px; color: #42645b; font-family: Georgia, serif; font-size: 11px; }
+.species-detail-copy h2 { margin: 23px 0 10px; color: #31574e; font: 700 12px Manrope, sans-serif; }
+.species-stage-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.species-stage-list > div { display: grid; gap: 4px; min-width: 118px; padding: 10px 12px; border: 1px solid #dce8df; border-radius: 5px; background: #fff; }
+.species-stage-list strong { color: #245346; font-size: 10px; }
+.species-stage-list span, .species-no-stock { color: #84938b; font-size: 9px; }
+.species-no-stock { margin: 0 0 15px; }
+.species-shop-link { display: inline-flex; min-height: 42px; align-items: center; gap: 10px; margin-top: 21px; padding: 0 15px; border-radius: 4px; color: #fff; background: #173f4a; font-size: 10px; font-weight: 700; text-decoration: none; transition: background .2s, transform .2s; }
+.species-shop-link:hover { color: #fff; background: #087f7a; transform: translateY(-1px); }
 .breadcrumb-line { display: flex; align-items: center; gap: 10px; padding: 22px 0; color: #7e8d85; font-size: 10px; }
 .breadcrumb-line i { font-size: 8px; }
 .breadcrumb-line a:hover { color: var(--teal); }
@@ -826,6 +848,9 @@ a.product-title{
   .category-feature-card { min-height: 235px; }
   .category-feature-copy { right: 16px; bottom: 17px; left: 16px; }
   .category-feature-copy h2 { font-size: 25px; }
+  .species-detail-hero { grid-template-columns: 1fr; }
+  .species-detail-image, .species-detail-image img { height: 280px; min-height: 280px; }
+  .species-detail-copy { padding: 25px 20px 30px; }
   .detail-image-wrap { min-height: 250px; }
   .detail-promises { gap: 11px; }
   .cart-line { grid-template-columns: 58px minmax(0,1fr) auto; gap: 9px; }
@@ -924,6 +949,9 @@ a.product-title{
 .marketplace-categories { display: flex; flex-wrap: wrap; gap: 8px; margin: 22px 0; }
 .marketplace-categories button { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 1px solid #e0e9e3; border-radius: 30px; color: #687e76; background: #fff; font-size: 9px; font-weight: 700; }
 .marketplace-categories button.active { border-color: #087f7a; color: #087f7a; background: #eaf5ee; }
+.marketplace-listing-section { margin-top: 30px; }
+.marketplace-listing-section h2 { margin: 0 0 14px; color: #193f49; font: 800 19px Manrope, sans-serif; }
+.marketplace-listing-note { margin: 0; color: #798a84; font-size: 11px; }
 .marketplace-empty { padding: 70px 20px; color: #738780; text-align: center; }
 .marketplace-empty h3 { margin: 13px 0 6px; color: #214750; font: 800 19px Manrope, sans-serif; }
 .marketplace-empty p { font-size: 11px; }

@@ -1,13 +1,18 @@
-import { useMemo, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { Fish, Search, ShoppingCart } from "lucide-react";
 import MarketplaceFishCard from "../components/MarketplaceFishCard";
 import { getListings } from "../utils/store";
 
 function Shop({ cart, onAddToCart }) {
+  const [searchParams] = useSearchParams();
+  const selectedSpecies = searchParams.get("species") || "";
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All fish");
   const listings = getListings();
+  useEffect(() => {
+    setQuery("");
+  }, [selectedSpecies]);
   const availableListings = useMemo(() => {
     const uniqueListings = new Map();
     listings.forEach((listing) => {
@@ -26,7 +31,25 @@ function Shop({ cart, onAddToCart }) {
       category === "All fish" || (listing.category || "Freshwater") === category;
     return matchesText && matchesCategory;
   });
+  const selectedSpeciesListings = selectedSpecies
+    ? filteredListings.filter((listing) => listing.species.toLowerCase() === selectedSpecies.toLowerCase())
+    : [];
+  const otherListings = selectedSpecies
+    ? filteredListings.filter((listing) => listing.species.toLowerCase() !== selectedSpecies.toLowerCase())
+    : filteredListings;
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const renderListings = (items) => (
+    <div className="marketplace-grid">
+      {items.map((listing) => (
+        <MarketplaceFishCard
+          key={listing.id}
+          listing={listing}
+          onAddToCart={onAddToCart}
+          cartQuantity={cart.find((item) => item.listingId === listing.id)?.quantity || 0}
+        />
+      ))}
+    </div>
+  );
 
   return (
     <main className="marketplace-page">
@@ -42,8 +65,16 @@ function Shop({ cart, onAddToCart }) {
         <header className="marketplace-toolbar">
           <div>
             <span className="dept-section-kicker">CURRENT FARMER LISTINGS</span>
-            <h2>{filteredListings.length} available {filteredListings.length === 1 ? "listing" : "listings"}</h2>
-            <p>Listings show each fish life stage, supplying farmer and current quantity.</p>
+            <h2>
+              {selectedSpecies
+                ? `All fish · ${filteredListings.length} available listings`
+                : `${filteredListings.length} available ${filteredListings.length === 1 ? "listing" : "listings"}`}
+            </h2>
+            <p>
+              {selectedSpecies
+                ? `${selectedSpecies} listings appear first, followed by other available fish.`
+                : "Listings show each fish life stage, supplying farmer and current quantity."}
+            </p>
           </div>
           <label className="marketplace-search">
             <Search size={16} />
@@ -68,23 +99,30 @@ function Shop({ cart, onAddToCart }) {
             </button>
           ))}
         </div>
-        {filteredListings.length ? (
-          <div className="marketplace-grid">
-            {filteredListings.map((listing) => (
-              <MarketplaceFishCard
-                key={listing.id}
-                listing={listing}
-                onAddToCart={onAddToCart}
-                cartQuantity={cart.find((item) => item.listingId === listing.id)?.quantity || 0}
-              />
-            ))}
-          </div>
-        ) : (
+        {!filteredListings.length && (
           <div className="marketplace-empty">
             <Fish size={28} />
             <h3>No matching fish listings</h3>
             <p>Try another search or check back when more fish are listed.</p>
           </div>
+        )}
+        {selectedSpecies && selectedSpeciesListings.length > 0 && (
+          <section className="marketplace-listing-section">
+            <h2>{selectedSpecies} listings</h2>
+            {renderListings(selectedSpeciesListings)}
+          </section>
+        )}
+        {selectedSpecies && selectedSpeciesListings.length === 0 && (
+          <section className="marketplace-listing-section">
+            <h2>{selectedSpecies} listings</h2>
+            <p className="marketplace-listing-note">There are no current listings for {selectedSpecies}.</p>
+          </section>
+        )}
+        {otherListings.length > 0 && (
+          <section className="marketplace-listing-section">
+            {selectedSpecies && <h2>More fish in All fish</h2>}
+            {renderListings(otherListings)}
+          </section>
         )}
       </section>
     </main>
