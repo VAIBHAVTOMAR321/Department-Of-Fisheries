@@ -20,10 +20,9 @@ const fishImages = {
   "brown trout": {
     scientificName: "Salmo trutta",
     note: "A cold-water trout found in mountain streams",
-    image:
-      "https://images.unsplash.com/photo-1510130387422-82bed34b37e9?auto=format&fit=crop&w=1200&q=80",
-    source: "https://unsplash.com/",
-    credit: "Unsplash",
+    image: new URL("../assets/images/Brown.webp", import.meta.url).href,
+    source: "Department of Fisheries, Uttarakhand",
+    credit: "Government of Uttarakhand",
   },
   "golden carp": {
     scientificName: "Cyprinus carpio",
