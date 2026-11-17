@@ -934,7 +934,7 @@ a.product-title{
 .dept-no-listings { padding: 28px; border: 1px dashed #dce8df; color: #748782; background: #f7faf7; font-size: 12px; text-align: center; }
 .marketplace-page { min-height: 70vh; background: #f7f9f6; }
 .marketplace-hero { color: #fff; background: linear-gradient(110deg, #123b47, #1d5a58); }
-.marketplace-hero-content { padding-top: 43px; padding-bottom: 41px; }
+.marketplace-hero-content { padding-top: 4px; padding-bottom: 8px; }
 .marketplace-hero-content > span { color: #b7d7c3; font-size: 9px; font-weight: 800; letter-spacing: 1.5px; }
 .marketplace-hero h1
  { margin: 9px 0 6px;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowUpRight, MapPin, ShoppingCart } from "lucide-react";
+import { MapPin, ShoppingCart } from "lucide-react";
 import { getFishImage } from "../data/fishImages";
 
 export default function MarketplaceFishCard({ listing, onAddToCart, cartQuantity = 0 }) {
@@ -27,9 +27,9 @@ export default function MarketplaceFishCard({ listing, onAddToCart, cartQuantity
           <strong>₹{listing.ask}</strong><span>/ kg</span>
           <small>{listing.qty} kg available</small>
         </div>
-        <a className="market-image-credit" href={fish.source} target="_blank" rel="noreferrer">
-          Photo: {fish.credit} <ArrowUpRight size={11} />
-        </a>
+        <span className="market-image-credit">
+          Photo: {fish.credit}
+        </span>
         <div className="market-buy-row">
           <label>
             <span className="visually-hidden">Quantity in kilograms for {listing.species}</span>
