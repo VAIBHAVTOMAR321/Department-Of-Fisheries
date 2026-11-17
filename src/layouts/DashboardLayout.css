@@ -165,7 +165,25 @@
   display: flex;
   align-items: center;
   gap: 9px;
+  padding: 5px 8px;
+  border: 0;
+  border-radius: 8px;
+  color: inherit;
+  background: transparent;
   font-size: 11px;
+  text-align: left;
+  cursor: pointer;
+}
+.profile-menu {
+  position: relative;
+}
+.profile-chip:hover,
+.profile-chip[aria-expanded="true"] {
+  background: #f0f7f5;
+}
+.profile-chip:focus-visible {
+  outline: 2px solid #168b70;
+  outline-offset: 2px;
 }
 .profile-chip b,
 .profile-chip small {
@@ -185,6 +203,53 @@
   display: grid;
   place-items: center;
   font-weight: 800;
+}
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 9px);
+  right: 0;
+  z-index: 20;
+  width: min(260px, calc(100vw - 32px));
+  padding: 7px;
+  border: 1px solid #e3eceb;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: 0 12px 30px #183f491f;
+}
+.profile-dropdown-user {
+  display: grid;
+  gap: 4px;
+  padding: 10px 11px;
+  border-bottom: 1px solid #edf2f2;
+}
+.profile-dropdown-user b {
+  color: #244b55;
+  font-size: 11px;
+}
+.profile-dropdown-user small {
+  color: #8ba0a4;
+  font-size: 9px;
+}
+.profile-dropdown > button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 9px;
+  margin-top: 5px;
+  padding: 10px 11px;
+  border: 0;
+  border-radius: 7px;
+  color: #87534d;
+  background: transparent;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+.profile-dropdown > button:hover,
+.profile-dropdown > button:focus-visible {
+  color: #753b35;
+  background: #fff1ee;
 }
 .dash-content {
   padding: 29px 32px 50px;

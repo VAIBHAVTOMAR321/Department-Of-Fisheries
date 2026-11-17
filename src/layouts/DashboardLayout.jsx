@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   Activity,
@@ -35,7 +35,26 @@ const links = [
 ];
 export default function DashboardLayout({ user, onLogout, onRoleChange }) {
   const nav = useNavigate();
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef(null);
   const supplierRoles = ["farmer", "hatchery", "dam", "contractor"];
+  useEffect(() => {
+    if (!profileMenuOpen) return undefined;
+    const closeOnOutsideClick = (event) => {
+      if (!profileMenuRef.current?.contains(event.target)) {
+        setProfileMenuOpen(false);
+      }
+    };
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setProfileMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", closeOnOutsideClick);
+    document.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
+      document.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [profileMenuOpen]);
   const visibleLinks =
     user.role === "delivery"
       ? links.filter((x) => ["Overview", "Deliveries"].includes(x[0]))
@@ -106,13 +125,45 @@ export default function DashboardLayout({ user, onLogout, onRoleChange }) {
               <Bell size={18} />
               <i />
             </button>
-            <div className="profile-chip">
-              <div className="avatar">{user.name?.[0] || "A"}</div>
-              <div>
-                <b>{user.name}</b>
-                <small>{user.roleLabel}</small>
-              </div>
-              <ChevronDown size={14} />
+            <div className="profile-menu" ref={profileMenuRef}>
+              <button
+                className="profile-chip"
+                type="button"
+                aria-label={`Account menu for ${user.name || "user"}`}
+                aria-haspopup="menu"
+                aria-expanded={profileMenuOpen}
+                aria-controls="profile-dropdown"
+                onClick={() => setProfileMenuOpen((open) => !open)}
+              >
+                <div className="avatar">{user.name?.[0] || "A"}</div>
+                <div>
+                  <b>{user.name}</b>
+                  <small>
+                    {user.roleLabel === user.name
+                      ? `${user.roleLabel} account`
+                      : user.roleLabel}
+                  </small>
+                </div>
+                <ChevronDown size={14} />
+              </button>
+              {profileMenuOpen && (
+                <div className="profile-dropdown" id="profile-dropdown" role="menu">
+                  <div className="profile-dropdown-user">
+                    <b>{user.name}</b>
+                    {user.roleLabel && <small>{user.roleLabel}</small>}
+                  </div>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setProfileMenuOpen(false);
+                      onLogout();
+                    }}
+                  >
+                    <LogOut size={15} /> Sign out
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </header>
