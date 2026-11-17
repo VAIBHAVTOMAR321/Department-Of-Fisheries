@@ -24,7 +24,7 @@ function Header() {
             <div className="navbar-nav mx-auto">
               <NavLink className="nav-link" to="/">Home</NavLink>
               <NavLink className="nav-link" to="/categories">Fish species</NavLink>
-              <NavLink className="nav-link" to="/shop">Farmers’ marketplace</NavLink>
+              <NavLink className="nav-link" to="/shop">Shop Now</NavLink>
               <NavLink className="nav-link" to="/contact">Contact</NavLink>
             </div>
             <div className="header-actions">

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Fish, Menu, ArrowUpRight, ShoppingCart, X } from "lucide-react";
+import { Menu, ArrowUpRight, ShoppingCart, X } from "lucide-react";
 import "./Navbar.css";
 import { Link, NavLink } from "react-router-dom";
-import UKLogo from "../../assets/images/uk_logo.jpeg";
+import LogoImage from "../LogoImage.jsx";
 export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
   const [isOpen, setIsOpen] = useState(false);
   const closeMenu = () => setIsOpen(false);
@@ -10,7 +10,7 @@ export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
     <header className="site-nav">
       <Link className="brand" to="/" onClick={closeMenu}>
         <span className="brand-mark">
-       <img src={UKLogo} alt="UK Logo" />
+          <LogoImage />
         </span>
         <span className="brand-copy">
           <strong>Department of Fisheries</strong>
@@ -21,7 +21,7 @@ export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
         <nav>
           <NavLink className="nav-link" to="/" onClick={closeMenu}>Home</NavLink>
           <NavLink className="nav-link" to="/categories" onClick={closeMenu}>Fish species</NavLink>
-          <NavLink className="nav-link" to="/shop" onClick={closeMenu}>Farmers’ marketplace</NavLink>
+          <NavLink className="nav-link" to="/shop" onClick={closeMenu}>Shop Now</NavLink>
           <NavLink className="nav-link" to="/contact" onClick={closeMenu}>Contact</NavLink>
         </nav>
         <div className="nav-actions">

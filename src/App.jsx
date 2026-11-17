@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -38,6 +38,7 @@ import Reports from "./pages/Reports";
 import Payments from "./pages/Payments";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
+import ContactRequests from "./pages/ContactRequests";
 
 import { roles } from "./data/seed";
 import {
@@ -79,6 +80,10 @@ function AppContent() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const isDashboard = pathname.startsWith("/app");
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
 
   const login = () => {
     const r = roles.find((x) => x.id === role);
@@ -239,6 +244,10 @@ function AppContent() {
           <Route path="people" element={<People />} />
           <Route path="reports" element={<Reports />} />
           <Route path="orders" element={<Orders />} />
+          <Route
+            path="contact-requests"
+            element={user?.role === "admin" ? <ContactRequests /> : <Navigate to="/app" replace />}
+          />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

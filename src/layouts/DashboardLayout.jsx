@@ -18,8 +18,10 @@ import {
   BarChart3,
   WalletCards,
   ClipboardList,
+  MessageSquareText,
 } from "lucide-react";
 import "./DashboardLayout.css";
+import LogoImage from "../components/LogoImage.jsx";
 const links = [
   ["Overview", "/app", LayoutDashboard],
   ["Fish listings", "/app/listings", Fish],
@@ -29,6 +31,7 @@ const links = [
   ["People & suppliers", "/app/people", Users],
   ["Reports & insights", "/app/reports", BarChart3],
   ["Orders", "/app/orders", ClipboardList],
+  ["Contact requests", "/app/contact-requests", MessageSquareText],
 ];
 export default function DashboardLayout({ user, onLogout, onRoleChange }) {
   const nav = useNavigate();
@@ -50,14 +53,14 @@ export default function DashboardLayout({ user, onLogout, onRoleChange }) {
             ].includes(x[0]),
           )
         : user.role === "inventory"
-          ? links.filter((x) => x[0] !== "Reports & insights")
+          ? links.filter((x) => !["Reports & insights", "Contact requests"].includes(x[0]))
           : links;
   return (
     <div className="dash-shell">
       <aside className="dash-sidebar">
         <Link className="brand side-brand" to="/">
           <span className="brand-mark">
-            <Fish />
+            <LogoImage />
           </span>
           <span>
             Department of Fisheries
