@@ -17,7 +17,7 @@ import "../pages/home.css";
 
 const heroSlides = [
   {
-    image: new URL("../assets/images/p24.jpeg", import.meta.url).href,
+    image: new URL("../assets/images/p22.jpeg", import.meta.url).href,
     alt: "Fisheries activity",
     label: "Himalayan waters, thriving communities",
   },
@@ -27,7 +27,7 @@ const heroSlides = [
     label: "Responsible freshwater aquaculture",
   },
   {
-    image: new URL("../assets/images/p41.jpeg", import.meta.url).href,
+    image: new URL("../assets/images/p9.jpeg", import.meta.url).href,
     alt: "Fishery produce",
     label: "Supporting livelihoods across Uttarakhand",
   },
