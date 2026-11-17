@@ -629,9 +629,13 @@ a.product-title{
     object-fit: cover;
     object-position: center top;
   }
-  .dept-leader-card > div { display: grid; gap: 5px; padding: 11px 10px 12px; }
+  .dept-leader-card > div { display: grid; gap: 5px; padding: 11px 10px 12px;
+    color: #000;
+    background-color: #fff;
+  
+  }
   .dept-leader-card strong { font-size: 10px; line-height: 1.4; }
-  .dept-leader-card span { color: #d3e2d9; font-size: 8px; line-height: 1.5; }
+  .dept-leader-card span { color: #000; font-size: 8px; line-height: 1.5; }
   .dept-hero-copy { grid-column: 2; grid-row: 1; max-width: 660px; padding: 66px 0 75px; }
   .dept-eyebrow, .dept-section-kicker {
     display: block;
