@@ -55,7 +55,7 @@ function Shop({ cart, onAddToCart }) {
     <main className="marketplace-page">
       <section className="marketplace-hero">
         <div className="container-xl marketplace-hero-content">
-          <span>DEPARTMENT OF FISHERIES · UTTARAKHAND</span>
+      
           <h1>Shop Now</h1>
           <p>Order fish directly from current freshwater listings across Uttarakhand.</p>
           <Link to="/cart"><ShoppingCart size={16} /> View basket {cartCount ? `(${cartCount} kg)` : ""}</Link>
