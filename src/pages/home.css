@@ -417,6 +417,12 @@ a.product-title{
 .contact-form h2 { margin: 0 0 4px; color: var(--ink); font-family: var(--serif); font-size: 24px; font-weight: 500; }
 .contact-form > p { margin: 0 0 19px; color: #859089; font-size: 10px; }
 .contact-form textarea { resize: vertical; }
+.contact-request-form { display: grid; gap: 14px; }
+.contact-request-form label { display: grid; gap: 6px; color: #41564d; font-size: 10px; font-weight: 600; }
+.contact-request-form .form-control { font-size: 11px; }
+.contact-request-form > button { justify-self: start; }
+.contact-request-form > small { color: #859089; font-size: 9px; }
+.contact-submit-success { margin-bottom: 15px; padding: 11px 13px; border: 1px solid #d5ebdf; border-radius: 3px; color: #28644e; background: #eff8f1; font-size: 10px; }
 .footer-order-link { color: #e4eee8; font-size: 11px; font-weight: 600; }
 .footer-order-link:hover { color: #fff; }
 .ordering-info { min-height: 430px; max-width: 900px; }

@@ -52,3 +52,6 @@ export const saveOrders = (orders) =>
 export const getCart = () => read("aqua_cart", []);
 export const saveCart = (cart) =>
   localStorage.setItem("aqua_cart", JSON.stringify(cart));
+export const getContactRequests = () => read("aqua_contact_requests", []);
+export const saveContactRequests = (requests) =>
+  localStorage.setItem("aqua_contact_requests", JSON.stringify(requests));

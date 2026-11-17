@@ -38,6 +38,7 @@ import Reports from "./pages/Reports";
 import Payments from "./pages/Payments";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
+import ContactRequests from "./pages/ContactRequests";
 
 import { roles } from "./data/seed";
 import {
@@ -239,6 +240,10 @@ function AppContent() {
           <Route path="people" element={<People />} />
           <Route path="reports" element={<Reports />} />
           <Route path="orders" element={<Orders />} />
+          <Route
+            path="contact-requests"
+            element={user?.role === "admin" ? <ContactRequests /> : <Navigate to="/app" replace />}
+          />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
