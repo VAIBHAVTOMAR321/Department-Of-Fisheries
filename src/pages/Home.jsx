@@ -17,17 +17,17 @@ import "../pages/home.css";
 
 const heroSlides = [
   {
-    image: new URL("../assets/images/p10.jpeg", import.meta.url).href,
+    image: new URL("../assets/images/p24.jpeg", import.meta.url).href,
     alt: "Fisheries activity",
     label: "Himalayan waters, thriving communities",
   },
   {
-    image: new URL("../assets/images/p38.jpeg", import.meta.url).href,
+    image: new URL("../assets/images/p1.jpeg", import.meta.url).href,
     alt: "Freshwater fish",
     label: "Responsible freshwater aquaculture",
   },
   {
-    image: new URL("../assets/images/p14.jpeg", import.meta.url).href,
+    image: new URL("../assets/images/p41.jpeg", import.meta.url).href,
     alt: "Fishery produce",
     label: "Supporting livelihoods across Uttarakhand",
   },
