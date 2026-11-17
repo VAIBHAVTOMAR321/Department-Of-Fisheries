@@ -11,7 +11,7 @@ export default function MarketplaceFishCard({ listing, onAddToCart, cartQuantity
   return (
     <article className="market-fish-card">
       <div className="market-fish-image">
-        <img src={fish.image} alt={listing.species} loading="lazy" />
+        <img src={fish.image} alt={[listing.species, listing.size].filter(Boolean).join(" ")} loading="lazy" />
         <span className="market-fresh-badge">Freshwater fish</span>
       </div>
       <div className="market-fish-info">
@@ -20,6 +20,7 @@ export default function MarketplaceFishCard({ listing, onAddToCart, cartQuantity
           <span>{listing.hours > 0 ? `${listing.hours}h freshness` : "Availability to confirm"}</span>
         </div>
         <h3>{listing.species}</h3>
+        {listing.size && <div className="market-fish-size">{listing.size}</div>}
         <div className="market-fish-location"><MapPin size={13} /> {listing.location}</div>
         <div className="market-fish-supplier">Listed by <strong>{listing.supplier}</strong></div>
         <div className="market-fish-price">
@@ -55,7 +56,7 @@ export default function MarketplaceFishCard({ listing, onAddToCart, cartQuantity
           </button>
         </div>
         <small className="market-minimum-note">
-          {canOrder ? "Minimum order 50 kg" : "Minimum order is 50 kg"}
+          {canOrder ? "Minimum order 50 kg" : available > 0 ? "Stock below 50 kg minimum" : "No stock available"}
         </small>
       </div>
     </article>

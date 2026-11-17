@@ -1,38 +1,40 @@
+import { getFishImage } from "./fishImages.js";
+
 export const categories = [
   {
     name: "Rohu",
     slug: "rohu",
-    description: "Firm, flavorful freshwater catch.",
-    image: "https://images.unsplash.com/photo-1534043464124-3be32fe000c9?auto=format&fit=crop&w=1200&q=80",
-    count: "Wild caught",
+    description: "Explore Rohu fingerlings, yearlings and brooders.",
+    image: getFishImage("Rohu").image,
+    count: "Freshwater fish",
   },
   {
     name: "Golden Carp",
     slug: "golden-carp",
-    description: "Sweet, tender fish for every table.",
-    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80",
-    count: "Farm raised",
+    description: "Explore Golden Carp fingerlings, yearlings and brooders.",
+    image: getFishImage("Golden Carp").image,
+    count: "Freshwater fish",
   },
   {
     name: "Rainbow Trout",
     slug: "rainbow-trout",
-    description: "Delicate fillets, beautifully fresh.",
-    image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=1200&q=80",
-    count: "Premium pick",
+    description: "Explore Rainbow Trout fingerlings, yearlings and brooders.",
+    image: getFishImage("Rainbow Trout").image,
+    count: "Freshwater fish",
   },
   {
     name: "Catla",
     slug: "catla",
-    description: "Hearty cuts for rich curries.",
-    image: "https://images.unsplash.com/photo-1615141982883-c7ad0e69fd62?auto=format&fit=crop&w=1200&q=80",
-    count: "Just landed",
+    description: "Explore Catla fingerlings, yearlings and brooders.",
+    image: getFishImage("Catla").image,
+    count: "Freshwater fish",
   },
   {
     name: "Brown Trout",
     slug: "brown-trout",
-    description: "Rich, buttery seasonal favorite.",
-    image: "https://images.unsplash.com/photo-1510130387422-82bed34b37e9?auto=format&fit=crop&w=1200&q=80",
-    count: "Seasonal",
+    description: "Explore Brown Trout fingerlings, yearlings and brooders.",
+    image: getFishImage("Brown Trout").image,
+    count: "Freshwater fish",
   },
 ];
 

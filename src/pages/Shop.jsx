@@ -11,7 +11,7 @@ function Shop({ cart, onAddToCart }) {
   const availableListings = useMemo(() => {
     const uniqueListings = new Map();
     listings.forEach((listing) => {
-      if (Number(listing.qty) >= 50 && !["Rejected", "Expired", "Sold out"].includes(listing.status)) {
+      if (Number(listing.qty) > 0 && !["Rejected", "Expired", "Sold out"].includes(listing.status)) {
         uniqueListings.set(listing.id, listing);
       }
     });
@@ -19,7 +19,7 @@ function Shop({ cart, onAddToCart }) {
   }, [listings]);
   const categories = ["All fish", ...new Set(availableListings.map((listing) => listing.category || "Freshwater"))];
   const filteredListings = availableListings.filter((listing) => {
-    const matchesText = `${listing.species} ${listing.supplier} ${listing.location}`
+    const matchesText = `${listing.species} ${listing.size || ""} ${listing.supplier} ${listing.location}`
       .toLowerCase()
       .includes(query.toLowerCase());
     const matchesCategory =
@@ -43,7 +43,7 @@ function Shop({ cart, onAddToCart }) {
           <div>
             <span className="dept-section-kicker">CURRENT FARMER LISTINGS</span>
             <h2>{filteredListings.length} available {filteredListings.length === 1 ? "listing" : "listings"}</h2>
-            <p>Listings show the available fish once, with the supplying farmer and current quantity.</p>
+            <p>Listings show each fish life stage, supplying farmer and current quantity.</p>
           </div>
           <label className="marketplace-search">
             <Search size={16} />

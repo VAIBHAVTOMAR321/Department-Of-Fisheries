@@ -64,11 +64,14 @@ function Cart({ cart, listings, user, onUpdateCart, onPlaceOrder }) {
               const fish = getFishImage(listing.species);
               return (
                 <article className="market-cart-line" key={listingId}>
-                  <img src={fish.image} alt={listing.species} />
+                  <img src={fish.image} alt={[listing.species, listing.size].filter(Boolean).join(" ")} />
                   <div className="market-cart-product">
                     <span>{listing.location}</span>
                     <h2>{listing.species}</h2>
-                    <small>Farmer: {listing.supplier} · ₹{listing.ask}/kg</small>
+                    <small>
+                      {listing.size && `${listing.size} · `}
+                      Farmer: {listing.supplier} · ₹{listing.ask}/kg
+                    </small>
                   </div>
                   <div className="market-cart-quantity">
                     <button

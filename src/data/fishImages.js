@@ -17,6 +17,21 @@ const fishImages = {
       "https://commons.wikimedia.org/wiki/File:Female_Rainbow_Trout_in_hand.JPG",
     credit: "Mike Anderson · CC BY-SA 3.0",
   },
+  "brown trout": {
+    scientificName: "Salmo trutta",
+    note: "A cold-water trout found in mountain streams",
+    image:
+      "https://images.unsplash.com/photo-1510130387422-82bed34b37e9?auto=format&fit=crop&w=1200&q=80",
+    source: "https://unsplash.com/",
+    credit: "Unsplash",
+  },
+  "golden carp": {
+    scientificName: "Cyprinus carpio",
+    note: "A golden variety of common carp",
+    image: "https://upload.wikimedia.org/wikipedia/commons/9/9b/Cyprinus_carpio.jpeg",
+    source: "https://commons.wikimedia.org/wiki/File:Cyprinus_carpio.jpeg",
+    credit: "Dezidor · CC BY-SA 3.0",
+  },
   rohu: {
     scientificName: "Labeo rohita",
     note: "A widely farmed Indian major carp",
@@ -67,9 +82,9 @@ export function getFishImage(species) {
 }
 
 export const uttarakhandFish = [
-  "Golden Mahseer",
+  "Golden Carp",
   "Rainbow Trout",
   "Rohu",
   "Catla",
-  "Common Carp",
+  "Brown Trout",
 ].map((name) => ({ name, ...getFishImage(name) }));

@@ -143,6 +143,7 @@ function AppContent() {
       orderItems.push({
         listingId: listing.id,
         species: listing.species,
+        size: listing.size,
         quantity: cartItem.quantity,
         unitPrice: Number(listing.ask),
         supplier: listing.supplier,

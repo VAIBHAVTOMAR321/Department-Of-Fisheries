@@ -62,9 +62,9 @@ function Home({ onLogin, onAddToCart, cart }) {
   const listings = getListings();
   const deliveries = getDeliveries();
   const users = getUsers();
-  const availableListings = listings.filter(
+  const visibleListings = listings.filter(
     (listing) =>
-      Number(listing.qty) >= 50 &&
+      Number(listing.qty) > 0 &&
       !["Rejected", "Expired", "Sold out"].includes(listing.status),
   );
   const speciesCount = new Set(listings.map((listing) => listing.species)).size;
@@ -178,15 +178,15 @@ function Home({ onLogin, onAddToCart, cart }) {
             <div>
               <span className="dept-section-kicker">FRESHWATER SPECIES</span>
               <h2>Fish available to order</h2>
-              <p>Browse current farmer listings. Every order has a 50 kg minimum per fish.</p>
+              <p>Browse every fish and life-stage listing. Orders require at least 50 kg per listing.</p>
             </div>
             <Link className="dept-text-link" to="/categories">
               View fish directory <ArrowUpRight size={16} />
             </Link>
           </div>
-          {availableListings.length ? (
+          {visibleListings.length ? (
             <div className="dept-market-grid">
-              {availableListings.map((listing) => (
+              {visibleListings.map((listing) => (
                 <MarketplaceFishCard
                   key={listing.id}
                   listing={listing}

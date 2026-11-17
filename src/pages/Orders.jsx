@@ -66,10 +66,14 @@ export default function Orders() {
                     const fish = getFishImage(item.species);
                     return (
                       <div className="dashboard-order-line" key={item.listingId}>
-                        <img src={fish.image} alt={item.species} />
+                        <img src={fish.image} alt={[item.species, item.size].filter(Boolean).join(" ")} />
                         <div>
                           <strong>{item.species}</strong>
-                          <small>{item.quantity} kg · ₹{item.unitPrice}/kg · Farmer: {item.supplier}</small>
+                          <small>
+                            {[item.size, `${item.quantity} kg`, `₹${item.unitPrice}/kg`, `Farmer: ${item.supplier}`]
+                              .filter(Boolean)
+                              .join(" · ")}
+                          </small>
                         </div>
                         <b>₹{(item.quantity * item.unitPrice).toLocaleString("en-IN")}</b>
                       </div>

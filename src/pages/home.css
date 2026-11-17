@@ -232,6 +232,8 @@
 .category-feature-copy > span { color: #d0ded4; font-size: 9px; letter-spacing: .5px; }
 .category-feature-copy h2 { margin: 6px 0; color: white; font-family: var(--serif); font-size: 30px; font-weight: 500; }
 .category-feature-copy p { margin: 0 0 12px; color: #e0e8e1; font-size: 11px; }
+.category-life-stages { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+.category-life-stages span { padding: 4px 7px; border: 1px solid #ffffff73; border-radius: 2px; color: #fff; background: #173a3973; font-size: 9px; }
 .category-feature-copy strong { font-size: 10px; }
 .breadcrumb-line { display: flex; align-items: center; gap: 10px; padding: 22px 0; color: #7e8d85; font-size: 10px; }
 .breadcrumb-line i { font-size: 8px; }
@@ -859,6 +861,7 @@ a.product-title{
 .market-fish-info { padding: 16px; }
 .market-fish-meta { display: flex; justify-content: space-between; gap: 8px; color: #82928d; font-size: 9px; }
 .market-fish-info h3 { margin: 8px 0 7px; color: #173f4a; font: 800 18px Manrope, sans-serif; }
+.market-fish-size { display: inline-block; margin: 0 0 8px; padding: 4px 8px; border-radius: 2px; color: #245346; background: #e0eddf; font-size: 10px; font-weight: 700; }
 .market-fish-location, .market-fish-supplier { display: flex; align-items: center; gap: 5px; color: #748782; font-size: 10px; }
 .market-fish-location svg { flex: 0 0 auto; color: #16857a; }
 .market-fish-supplier { display: block; margin-top: 6px; }

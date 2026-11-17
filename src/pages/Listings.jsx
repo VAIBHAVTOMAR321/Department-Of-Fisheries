@@ -30,6 +30,7 @@ export default function Listings() {
   const [selected, setSelected] = useState(null);
   const [form, setForm] = useState({
     species: "Rohu",
+    size: "Yearling",
     category: "Freshwater",
     qty: "250",
     ask: "180",
@@ -46,7 +47,7 @@ export default function Listings() {
   const own = items.filter((x) => !supplier || x.supplier === user.name);
   const filtered = own.filter(
     (x) =>
-      (x.species + " " + x.supplier + " " + x.location)
+      (x.species + " " + (x.size || "") + " " + x.supplier + " " + x.location)
         .toLowerCase()
         .includes(query.toLowerCase()) &&
       (filter === "All" ||
@@ -191,7 +192,7 @@ export default function Listings() {
               <div className="listing-fish-title">
                 <h3>{x.species}</h3>
                 <span>
-                  {x.category} · Grade {x.grade || "A"}
+                  {[x.size, x.category, `Grade ${x.grade || "A"}`].filter(Boolean).join(" · ")}
                 </span>
               </div>
               <StatusBadge status={x.status} />
@@ -339,12 +340,9 @@ export default function Listings() {
                 {[
                   "Rohu",
                   "Catla",
-                  "Common Carp",
-                  "Tilapia",
-                  "Pangasius",
-                  "Mrigal",
-                  "Silver Carp",
-                  "Other",
+                  "Golden Carp",
+                  "Rainbow Trout",
+                  "Brown Trout",
                 ].map((x) => (
                   <option>{x}</option>
                 ))}
@@ -360,6 +358,17 @@ export default function Listings() {
                 <option>Farm raised</option>
                 <option>River catch</option>
                 <option>Dam catch</option>
+              </select>
+            </label>
+            <label>
+              Fish size
+              <select
+                value={form.size}
+                onChange={(e) => setForm({ ...form, size: e.target.value })}
+              >
+                <option>Fingerling</option>
+                <option>Yearling</option>
+                <option>Brooder</option>
               </select>
             </label>
             <label>
