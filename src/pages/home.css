@@ -607,11 +607,32 @@ a.product-title{
   }
   .dept-hero-inner {
     position: relative;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(150px, 185px) minmax(0, 1fr) minmax(150px, 185px);
+    gap: 24px;
     min-height: 590px;
     align-items: center;
   }
-  .dept-hero-copy { max-width: 660px; padding: 66px 0 75px; }
+  .dept-leader-card {
+    overflow: hidden;
+    border: 1px solid #ffffff48;
+    color: #fff;
+    background: #143b43c9;
+    box-shadow: 0 14px 34px #071e2740;
+  }
+  .dept-leader-cm { grid-column: 1; grid-row: 1; }
+  .dept-leader-minister { grid-column: 3; grid-row: 1; }
+  .dept-leader-card img {
+    display: block;
+    width: 100%;
+    height: 230px;
+    object-fit: cover;
+    object-position: center top;
+  }
+  .dept-leader-card > div { display: grid; gap: 5px; padding: 11px 10px 12px; }
+  .dept-leader-card strong { font-size: 10px; line-height: 1.4; }
+  .dept-leader-card span { color: #d3e2d9; font-size: 8px; line-height: 1.5; }
+  .dept-hero-copy { grid-column: 2; grid-row: 1; max-width: 660px; padding: 66px 0 75px; }
   .dept-eyebrow, .dept-section-kicker {
     display: block;
     color: #6b9485;
@@ -759,17 +780,47 @@ a.product-title{
     .dept-species-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .dept-species-card:nth-child(n+4) { display: none; }
     .dept-hero, .dept-hero-inner { min-height: 550px; }
+    .dept-hero-inner { grid-template-columns: 135px minmax(0, 1fr) 135px; gap: 14px; }
+    .dept-leader-card img { height: 180px; }
+    .dept-leader-card > div { padding: 9px 8px 10px; }
+    .dept-leader-card strong { font-size: 9px; }
+    .dept-leader-card span { font-size: 7px; }
   }
   @media (max-width: 767.98px) {
     .dept-official-bar .container-xl { min-height: 31px; font-size: 8px; }
-    .dept-hero, .dept-hero-inner { min-height: 540px; }
-    .dept-hero-copy { padding: 48px 0 85px; }
+    .dept-hero, .dept-hero-inner { min-height: unset; }
+    .dept-hero-inner {
+      grid-template-areas:
+        "copy copy"
+        "cm minister"
+        "caption caption"
+        "controls controls";
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-content: center;
+      gap: 13px 10px;
+      padding-top: 37px;
+      padding-bottom: 25px;
+    }
+    .dept-leader-cm { grid-area: cm; }
+    .dept-leader-minister { grid-area: minister; }
+    .dept-leader-card { width: min(100%, 200px); justify-self: center; }
+    .dept-leader-card img { height: 145px; }
+    .dept-leader-card > div { gap: 3px; padding: 7px 8px; }
+    .dept-leader-card strong { font-size: 8px; }
+    .dept-leader-card span { font-size: 7px; }
+    .dept-hero-copy { grid-area: copy; padding: 0; }
     .dept-hero h1 { font-size: clamp(43px, 10vw, 62px); letter-spacing: -2px; }
     .dept-hero-copy > p { max-width: 430px; font-size: 11px; }
     .dept-hero-tags { gap: 7px; margin-top: 26px; }
     .dept-hero-tags span { padding: 7px; font-size: 8px; }
-    .dept-slide-caption { right: 12px; bottom: 14px; max-width: 245px; padding: 8px 10px; }
-    .dept-slide-controls { bottom: 24px; }
+    .dept-slide-caption {
+      position: static;
+      grid-area: caption;
+      justify-self: center;
+      max-width: 245px;
+      padding: 8px 10px;
+    }
+    .dept-slide-controls { position: static; grid-area: controls; justify-content: center; }
     .dept-stats-section { padding-top: 43px; }
     .dept-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .dept-stat-card { min-height: 115px; padding: 14px; }
@@ -793,7 +844,7 @@ a.product-title{
   }
 @media (max-width: 479.98px) {
     .dept-official-bar span:last-child { font-size: 7px; }
-    .dept-hero, .dept-hero-inner { min-height: 560px; }
+    .dept-hero, .dept-hero-inner { min-height: unset; }
     .dept-hero-actions { align-items: stretch; flex-direction: column; max-width: 260px; }
     .dept-button { justify-content: space-between; }
     .dept-hero-tags { display: grid; grid-template-columns: repeat(2, max-content); }
