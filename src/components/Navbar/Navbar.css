@@ -39,6 +39,12 @@
   display: grid;
   place-items: center;
 }
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
 .site-nav-menu {
   display: flex;
   align-items: center;
