@@ -578,7 +578,7 @@ a.product-title{
   .dept-official-bar span:first-child svg { color: #9dc9b3; }
   .dept-hero {
     position: relative;
-    min-height: 590px;
+
     overflow: hidden;
     color: #fff;
     background: #143b43;
