@@ -22,7 +22,7 @@ export default function Footer() {
         <div>
           <h4>Fisheries</h4>
           <Link to="/categories">Fish species</Link>
-          <Link to="/shop">Farmers’ marketplace</Link>
+          <Link to="/shop">Shop Now</Link>
           <Link to="/contact">Department contact</Link>
         </div>
         <div>

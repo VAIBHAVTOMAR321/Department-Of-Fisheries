@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -80,6 +80,10 @@ function AppContent() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const isDashboard = pathname.startsWith("/app");
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }, [pathname]);
 
   const login = () => {
     const r = roles.find((x) => x.id === role);

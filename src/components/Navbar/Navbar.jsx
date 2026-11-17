@@ -21,7 +21,7 @@ export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
         <nav>
           <NavLink className="nav-link" to="/" onClick={closeMenu}>Home</NavLink>
           <NavLink className="nav-link" to="/categories" onClick={closeMenu}>Fish species</NavLink>
-          <NavLink className="nav-link" to="/shop" onClick={closeMenu}>Farmers’ marketplace</NavLink>
+          <NavLink className="nav-link" to="/shop" onClick={closeMenu}>Shop Now</NavLink>
           <NavLink className="nav-link" to="/contact" onClick={closeMenu}>Contact</NavLink>
         </nav>
         <div className="nav-actions">

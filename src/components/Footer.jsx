@@ -18,7 +18,7 @@ function Footer() {
           <div className="footer-links">
             <h3>Explore</h3>
             <Link to="/categories">Fish species</Link>
-            <Link to="/shop">Farmers’ marketplace</Link>
+            <Link to="/shop">Shop Now</Link>
             <Link to="/about">Department services</Link>
             <Link to="/contact">Contact</Link>
           </div>
