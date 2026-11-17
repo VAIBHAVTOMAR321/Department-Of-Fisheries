@@ -48,9 +48,14 @@ function Categories() {
             </button>
             <span className="eyebrow">SPECIES PROFILE · UTTARAKHAND</span>
             <h1>{selectedCategory.name}</h1>
-            <p>{selectedFish.note}</p>
+            <p>{selectedCategory.description}</p>
+            <p className="species-fish-note">{selectedFish.note}</p>
             <div className="species-scientific-name">
               Scientific name <em>{selectedFish.scientificName}</em>
+            </div>
+            <div className="species-source-credit">
+              <span><i className="bi bi-link-45deg" /> Source: {selectedFish.source}</span>
+              <span><i className="bi bi-person-fill" /> Credit: {selectedFish.credit}</span>
             </div>
             <h2>Available life stages</h2>
             {stageStock.length ? (
