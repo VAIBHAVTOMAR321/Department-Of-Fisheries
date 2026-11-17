@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Fish, Menu, ArrowUpRight, ShoppingCart, X } from "lucide-react";
 import "./Navbar.css";
 import { Link, NavLink } from "react-router-dom";
+import UKLogo from "../../assets/images/uk_logo.jpeg";
 export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
   const [isOpen, setIsOpen] = useState(false);
   const closeMenu = () => setIsOpen(false);
@@ -9,7 +10,7 @@ export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
     <header className="site-nav">
       <Link className="brand" to="/" onClick={closeMenu}>
         <span className="brand-mark">
-          <Fish size={23} />
+       <img src={UKLogo} alt="UK Logo" />
         </span>
         <span className="brand-copy">
           <strong>Department of Fisheries</strong>
