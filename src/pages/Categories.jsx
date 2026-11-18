@@ -54,7 +54,7 @@ function Categories() {
               Scientific name <em>{selectedFish.scientificName}</em>
             </div>
             <div className="species-source-credit">
-              <span><i className="bi bi-link-45deg" /> Source: {selectedFish.source}</span>
+              {/* <span><i className="bi bi-link-45deg" /> Source: {selectedFish.source}</span> */}
               <span><i className="bi bi-person-fill" /> Credit: {selectedFish.credit}</span>
             </div>
             <h2>Available life stages</h2>

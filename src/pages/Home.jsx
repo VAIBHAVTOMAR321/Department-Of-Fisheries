@@ -408,23 +408,7 @@ function Home({ onLogin, onRegister, onAddToCart, cart }) {
         </div>
       </section>
 
-      <section className="dept-initiative-section">
-        <div className="container-xl dept-initiative-inner">
-          <span className="dept-initiative-seal"><Fish size={26} /></span>
-          <div>
-            <span className="dept-section-kicker">DEPARTMENT INITIATIVE</span>
-            <h2>Strengthening fisheries. Connecting communities.</h2>
-            <p>
-              This marketplace brings together current fish listings and
-              department services to support fisheries communities across
-              Uttarakhand.
-            </p>
-          </div>
-          <Link className="dept-text-link" to="/about">
-            About the department <ArrowUpRight size={16} />
-          </Link>
-        </div>
-      </section>
+     
 
       <section className="dept-contact-banner">
         <div className="container-xl dept-contact-inner">
