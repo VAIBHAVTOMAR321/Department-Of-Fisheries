@@ -3,6 +3,8 @@ import { ArrowUpRight, Menu, Search, ShoppingCart, X } from "lucide-react";
 import "./Navbar.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import LogoImage from "../LogoImage.jsx";
+import CMImg from "../../assets/images/cm.jpg";
+import MinisterImg from "../../assets/images/minister.jpg";
 export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -35,6 +37,7 @@ export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
               <small>UTTARAKHAND</small>
             </span>
           </Link>
+         
           <form className="nav-search" role="search" onSubmit={submitSearch}>
             <Search size={17} aria-hidden="true" />
             <label className="visually-hidden" htmlFor="marketplace-search">
@@ -49,13 +52,27 @@ export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
             />
             <button type="submit">Search</button>
           </form>
-          <div className="nav-actions">
-            <button className="nav-login" type="button" onClick={onLogin}>
-              Dashboard login
-            </button>
-            <Link className="nav-cart" to="/cart" onClick={closeMenu} aria-label={`Shopping cart, ${cartCount} kilograms`}>
-              <ShoppingCart size={16} /> Basket {cartCount ? <span>{cartCount} kg</span> : ""}
-            </Link>
+           <div className="nav-leaders">
+            <div className="nav-leader-card">
+              <img
+                src={CMImg}
+                alt="Shri Pushkar Singh Dhami"
+              />
+              <div>
+                <strong>Shri Pushkar Singh Dhami</strong>
+                <span>Hon'ble Chief Minister, Uttarakhand</span>
+              </div>
+            </div>
+            <div className="nav-leader-card">
+              <img
+                src={MinisterImg}
+                alt="Shri Saurabh Bahuguna"
+              />
+              <div>
+                <strong>Shri Saurabh Bahuguna</strong>
+                <span>Hon'ble Cabinet Minister, Fisheries</span>
+              </div>
+            </div>
           </div>
           <button
             className="mobile-menu"
@@ -82,6 +99,14 @@ export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
               Track order <ArrowUpRight size={13} />
             </button>
             <NavLink className="nav-link nav-contact-mobile" to="/contact" onClick={closeMenu}>Contact</NavLink>
+            <div className="nav-menu-actions">
+              <button className="nav-login" type="button" onClick={onLogin}>
+                Dashboard login
+              </button>
+              <Link className="nav-cart" to="/cart" onClick={closeMenu} aria-label={`Shopping cart, ${cartCount} kilograms`}>
+                <ShoppingCart size={16} /> Basket {cartCount ? <span>{cartCount} kg</span> : ""}
+              </Link>
+            </div>
           </nav>
         </div>
       </header>

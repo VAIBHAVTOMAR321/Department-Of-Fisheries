@@ -163,26 +163,6 @@ function Home({ onLogin, onRegister, onAddToCart, cart }) {
           ))}
         </div>
         <div className="container-xl dept-hero-inner">
-          <article className="dept-leader-card dept-leader-cm">
-            <img
-              src={new URL("../assets/images/cm.jpg", import.meta.url).href}
-              alt="Shri Pushkar Singh Dhami"
-            />
-            <div>
-              <strong>Shri Pushkar Singh Dhami</strong>
-              <span>Hon'ble Chief Minister, Uttarakhand</span>
-            </div>
-          </article>
-          <article className="dept-leader-card dept-leader-minister">
-            <img
-              src={new URL("../assets/images/Minister.jpg", import.meta.url).href}
-              alt="Shri Saurabh Bahuguna"
-            />
-            <div>
-              <strong>Shri Saurabh Bahuguna</strong>
-              <span>Hon'ble Cabinet Minister, Fisheries</span>
-            </div>
-          </article>
           <div className="dept-hero-copy">
             <div className="dept-eyebrow"><span /> FRESHWATER FISHERIES · UTTARAKHAND</div>
             <h1>Healthy waters.<br />Thriving <em>fisheries.</em></h1>
