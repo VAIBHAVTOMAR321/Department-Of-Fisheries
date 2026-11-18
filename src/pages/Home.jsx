@@ -8,6 +8,7 @@ import {
   Fish,
   HandCoins,
   MapPinned,
+  ShoppingCart,
   Sprout,
   Waves,
 } from "lucide-react";
@@ -62,6 +63,7 @@ function Home({ onLogin, onAddToCart, cart }) {
   const listings = getListings();
   const deliveries = getDeliveries();
   const users = getUsers();
+  const cartListingCount = cart.length;
   const visibleListings = listings.filter(
     (listing) =>
       Number(listing.qty) > 0 &&
@@ -200,9 +202,14 @@ function Home({ onLogin, onAddToCart, cart }) {
               <h2>Fish available to order</h2>
               <p>Browse every fish and life-stage listing. Orders require at least 50 kg per listing.</p>
             </div>
-            <Link className="dept-text-link" to="/categories">
-              View fish directory <ArrowUpRight size={16} />
-            </Link>
+            <div className="dept-section-actions">
+              <Link className="dept-text-link" to="/categories">
+                View fish directory <ArrowUpRight size={16} />
+              </Link>
+              <Link className="dept-cart-link" to="/cart" aria-label={`View cart with ${cartListingCount} listings`}>
+                <ShoppingCart size={15} /> View cart <span>{cartListingCount}</span>
+              </Link>
+            </div>
           </div>
           {visibleListings.length ? (
             <div className="dept-market-grid">

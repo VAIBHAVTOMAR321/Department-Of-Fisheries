@@ -15,19 +15,19 @@
 .announcement-bar a { color: #d3ded7; }
 .announcement-bar strong { color: #fff; font-weight: 600; }
 .site-header { position: sticky; z-index: 20; top: 0; background: rgba(255,254,250,.97); border-bottom: 1px solid rgba(32,65,60,.08); }
-.site-header .navbar { min-height: 81px; }
+.site-header .navbar { min-height: 74px; }
 .brand-mark { display: inline-flex; align-items: center; gap: 9px; color: var(--ink); flex-shrink: 0; }
-.brand-logo-image { display: block; width: 39px; height: 39px; object-fit: contain; }
-.brand-name { font-family: var(--serif); font-size: 22px; font-weight: 600; line-height: .96; letter-spacing: -.8px; }
+.brand-logo-image { display: block; width: 36px; height: 36px; object-fit: contain; }
+.brand-name { font-family: var(--serif); font-size: 20px; font-weight: 600; line-height: .96; letter-spacing: -.8px; }
 .brand-name > span { color: var(--coral); font-style: italic; }
 .brand-name small { display: block; margin-top: 6px; font-family: "DM Sans", sans-serif; font-size: 7px; font-weight: 700; letter-spacing: 1.65px; }
-.navbar-nav { gap: clamp(12px, 2.2vw, 36px); }
-.site-header .nav-link { position: relative; padding: 31px 0 !important; color: #475b58; font-size: 12px; font-weight: 600; }
-.site-header .nav-link::after { position: absolute; right: 0; bottom: 23px; left: 0; height: 1px; background: var(--coral); content: ""; transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
+.navbar-nav { gap: clamp(10px, 1.8vw, 28px); }
+.site-header .nav-link { position: relative; padding: 27px 0 !important; color: #475b58; font-size: 10px; font-weight: 600; }
+.site-header .nav-link::after { position: absolute; right: 0; bottom: 20px; left: 0; height: 1px; background: var(--coral); content: ""; transform: scaleX(0); transform-origin: left; transition: transform .2s ease; }
 .site-header .nav-link:hover::after, .site-header .nav-link.active::after { transform: scaleX(1); }
 .site-header .nav-link.active { color: var(--ink); }
 .header-actions { display: flex; align-items: center; gap: 8px; }
-.header-contact { padding: 10px 12px; font-size: 10px; white-space: nowrap; }
+.header-contact { padding: 8px 10px; font-size: 9px; white-space: nowrap; }
 .header-icon-button { position: relative; display: inline-flex; width: 39px; height: 39px; align-items: center; justify-content: center; padding: 0; border: 0; border-radius: 50%; color: var(--ink); background: transparent; font-size: 17px; transition: background .2s ease; }
 .header-icon-button:hover { background: var(--seafoam); }
 .icon-count { position: absolute; top: 0; right: 0; display: grid; min-width: 16px; height: 16px; padding: 0 3px; place-items: center; border: 1px solid #fffefa; border-radius: 100px; color: white; background: var(--coral); font: 600 9px "DM Sans",sans-serif; }
@@ -234,12 +234,7 @@
 .category-life-stages span { padding: 4px 7px; border: 1px solid #ffffff73; border-radius: 2px; color: #fff; background: #173a3973; font-size: 9px; }
 .category-feature-copy strong { font-size: 10px; }
 .category-feature-card:focus-visible { outline: 3px solid #087f7a; outline-offset: 3px; }
-.species-detail-hero { display: grid; min-height: 430px;
-  padding: 8px;
-  
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: #f3f7f2;
-
-}
+.species-detail-hero { display: grid; min-height: 430px; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: #f3f7f2; }
 .species-detail-image { position: relative; min-height: 430px; overflow: hidden; background: #dce5de; }
 .species-detail-image::after { position: absolute; inset: 45% 0 0; background: linear-gradient(0deg,#142c2a8c,transparent); content: ""; }
 .species-detail-image img { display: block; width: 100%; height: 100%; min-height: 430px; object-fit: cover; }
@@ -248,13 +243,10 @@
 .species-back-link { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 27px; padding: 0; border: 0; color: #53766b; background: transparent; font-size: 10px; font-weight: 700; cursor: pointer; }
 .species-back-link:hover { color: #087f7a; }
 .species-detail-copy .eyebrow { margin-bottom: 8px; }
-.species-detail-copy h1 { margin: 0 0 10px; color: #183f49; font-size:22px;}
+.species-detail-copy h1 { margin: 0 0 10px; color: #183f49; font: 800 clamp(32px, 4vw, 46px)/1.15 Manrope, sans-serif; }
 .species-detail-copy > p { max-width: 430px; color: #71847b; font-size: 12px; line-height: 1.8; }
 .species-scientific-name { color: #87958e; font-size: 9px; }
 .species-scientific-name em { margin-left: 5px; color: #42645b; font-family: Georgia, serif; font-size: 11px; }
-.species-source-credit { display: flex; flex-wrap: wrap; gap: 12px; margin: 10px 0 0; color: #87958e; font-size: 9px; }
-.species-source-credit span { display: inline-flex; align-items: center; gap: 4px; }
-.species-source-credit i { font-size: 9px; }
 .species-detail-copy h2 { margin: 23px 0 10px; color: #31574e; font: 700 12px Manrope, sans-serif; }
 .species-stage-list { display: flex; flex-wrap: wrap; gap: 8px; }
 .species-stage-list > div { display: grid; gap: 4px; min-width: 118px; padding: 10px 12px; border: 1px solid #dce8df; border-radius: 5px; background: #fff; }
@@ -432,8 +424,8 @@ a.product-title{
 .about-bottom-photo { height: 370px; background: url("https://images.unsplash.com/photo-1559737558-2f5a35f4523b?auto=format&fit=crop&w=1100&q=85") center/cover; }
 .about-bottom > div:last-child p { margin: 15px 0 20px; }
 .about-bottom h2 em { color: #b97861; font-weight: 500; }
-.contact-hero { padding: 8px 0 18px; color: white; background: linear-gradient(90deg,#173b39ed,#173b3973),url("https://images.unsplash.com/photo-1510130387422-82bed34b37e9?auto=format&fit=crop&w=1800&q=85") center 45%/cover; }
-.contact-hero h1 { font-size:20px; line-height: 22px; }
+.contact-hero { padding: 64px 0 68px; color: white; background: linear-gradient(90deg,#173b39ed,#173b3973),url("https://images.unsplash.com/photo-1510130387422-82bed34b37e9?auto=format&fit=crop&w=1800&q=85") center 45%/cover; }
+.contact-hero h1 { font-size: clamp(48px,6.5vw,68px); }
 .contact-hero p { max-width: 410px; margin: 15px 0 0; color: #d5e0d8; font-size: 12px; line-height: 1.8; }
 .contact-content { padding-top: 65px; padding-bottom: 80px; }
 .contact-info h2 { margin: 0 0 24px; color: var(--ink); font-family: var(--serif); font-size: 31px; font-weight: 500; }
@@ -473,12 +465,12 @@ a.product-title{
 .not-found p { margin: 0 0 20px; color: #859088; font-size: 11px; }
 
 @media (max-width: 991.98px) {
-  .site-header .navbar { min-height: 70px; }
+  .site-header .navbar { min-height: 66px; }
   .site-header .navbar-collapse { padding: 0 0 17px; 
     margin-left: 8px; margin-right: 0;
   }
   .header-contact { margin-top: 7px; }
-  .site-header .nav-link { padding: 10px 0 !important; }
+  .site-header .nav-link { padding: 9px 0 !important; font-size: 10px; }
   .site-header .nav-link::after { bottom: 5px; right: auto; width: 35px; }
   .navbar-nav { gap: 0; }
   .header-actions { padding-top: 7px; }
@@ -736,7 +728,7 @@ a.product-title{
   .dept-slide-controls { position: absolute; bottom: 22px; left: 12px; display: flex; gap: 7px; }
   .dept-slide-controls button { width: 23px; height: 4px; padding: 0; border: 0; border-radius: 4px; background: #ffffff73; }
   .dept-slide-controls button.active { width: 38px; background: #fff; }
-  .dept-stats-section { padding: 56px 0 37px; background: #f5f8f5; }
+  .dept-stats-section { padding: 44px 0 30px; background: #f5f8f5; }
   .dept-stats-heading, .dept-section-heading {
     display: flex;
     align-items: end;
@@ -751,30 +743,34 @@ a.product-title{
     letter-spacing: -.8px;
   }
   .dept-data-note { margin-bottom: 4px; color: #879797; font-size: 9px; }
-  .dept-stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 15px; }
+  .dept-stats-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
   .dept-stat-card {
     display: grid;
-    min-height: 145px;
+    min-height: 115px;
     grid-template-columns: 40px 1fr;
     align-content: center;
     align-items: center;
-    gap: 3px 12px;
-    padding: 22px;
+    gap: 3px 10px;
+    padding: 16px;
     border: 1px solid #e4ece7;
     border-radius: 9px;
     background: #fff;
     box-shadow: 0 7px 20px #173a3908;
   }
-  .dept-stat-icon { display: grid; width: 39px; height: 39px; grid-row: span 2; place-items: center; border-radius: 11px; color: #167a70; background: #e7f3ee; }
-  .dept-stat-card strong { color: #153f4a; font: 800 24px Manrope, sans-serif; letter-spacing: -.7px; }
+  .dept-stat-icon { display: grid; width: 35px; height: 35px; grid-row: span 2; place-items: center; border-radius: 10px; color: #167a70; background: #e7f3ee; }
+  .dept-stat-card strong { color: #153f4a; font: 800 21px Manrope, sans-serif; letter-spacing: -.7px; }
   .dept-stat-card > span:last-child { color: #7a8c8c; font-size: 10px; }
   .dept-delivery-note { display: flex; align-items: center; gap: 8px; margin: 16px 0 0; color: #778a89; font-size: 9px; }
   .dept-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #48a77d; box-shadow: 0 0 0 3px #48a77d20; }
-  .dept-species-section { padding: 78px 0 86px; }
-  .dept-section-heading { margin-bottom: 27px; }
-  .dept-section-heading p { margin: 8px 0 0; color: var(--dept-muted); font-size: 12px; }
+  .dept-species-section { padding: 58px 0 64px; }
+  .dept-section-heading { margin-bottom: 20px; }
+  .dept-section-heading p { margin: 7px 0 0; color: var(--dept-muted); font-size: 10px; }
+  .dept-section-actions { display: flex; align-items: center; gap: 16px; }
   .dept-text-link { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 4px; color: #087f7a; font-size: 10px; font-weight: 800; text-decoration: none; white-space: nowrap; }
   .dept-text-link:hover { color: #165c53; }
+  .dept-cart-link { display: inline-flex; align-items: center; gap: 6px; color: #087f7a; font-size: 10px; font-weight: 800; text-decoration: none; white-space: nowrap; }
+  .dept-cart-link:hover { color: #165c53; }
+  .dept-cart-link span { display: grid; min-width: 17px; height: 17px; padding: 0 4px; place-items: center; border-radius: 20px; color: #fff; background: #087f7a; font-size: 8px; }
   .dept-species-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; }
   .dept-species-card { overflow: hidden; border: 1px solid #e6ece8; border-radius: 8px; background: #fff; }
   .dept-species-card > img { display: block; width: 100%; height: 164px; object-fit: cover; background: #eef2ef; }
@@ -784,17 +780,17 @@ a.product-title{
   .dept-species-card p { min-height: 30px; margin: 0 0 10px; color: #758582; font-size: 9px; line-height: 1.6; }
   .dept-species-card a { display: inline-flex; align-items: center; gap: 4px; color: #628078; font-size: 8px; text-decoration: none; }
   .dept-species-card a:hover { color: #087f7a; text-decoration: underline; }
-  .dept-services-section { padding: 73px 0 80px; background: #f5f8f5; }
-  .dept-service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-  .dept-service-card { min-height: 230px; padding: 23px; border: 1px solid #e4ece7; border-radius: 8px; background: #fff; }
-  .dept-service-card > span { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 12px; color: #147d71; background: #eaf4ee; }
-  .dept-service-card h3 { margin: 18px 0 8px; color: #1b424c; font: 800 15px Manrope, sans-serif; }
-  .dept-service-card p { min-height: 38px; margin: 0 0 15px; color: #738482; font-size: 10px; line-height: 1.75; }
+  .dept-services-section { padding: 57px 0 64px; background: #f5f8f5; }
+  .dept-service-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .dept-service-card { min-height: 190px; padding: 19px; border: 1px solid #e4ece7; border-radius: 8px; background: #fff; }
+  .dept-service-card > span { display: grid; width: 36px; height: 36px; place-items: center; border-radius: 10px; color: #147d71; background: #eaf4ee; }
+  .dept-service-card h3 { margin: 13px 0 7px; color: #1b424c; font: 800 13px Manrope, sans-serif; }
+  .dept-service-card p { min-height: 34px; margin: 0 0 12px; color: #738482; font-size: 9px; line-height: 1.7; }
   .dept-service-card a { display: inline-flex; align-items: center; gap: 6px; color: #087f7a; font-size: 10px; font-weight: 800; text-decoration: none; }
   .dept-service-card a:hover { gap: 10px; }
-  .dept-contact-banner { padding: 54px 0; color: #fff; background: #123b47; }
-  .dept-contact-inner { display: grid; grid-template-columns: 54px 1fr auto; align-items: center; gap: 20px; }
-  .dept-contact-icon { display: grid; width: 50px; height: 50px; place-items: center; border: 1px solid #ffffff45; border-radius: 14px; color: #b3d2bc; background: #ffffff0d; }
+  .dept-contact-banner { padding: 42px 0; color: #fff; background: #123b47; }
+  .dept-contact-inner { display: grid; grid-template-columns: 48px 1fr auto; align-items: center; gap: 16px; }
+  .dept-contact-icon { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid #ffffff45; border-radius: 12px; color: #b3d2bc; background: #ffffff0d; }
   .dept-contact-inner .dept-section-kicker { color: #b6d4c1; }
   .dept-contact-inner h2 { margin: 7px 0 5px; color: #fff; font: 800 clamp(20px, 2.7vw, 27px)/1.25 Manrope, sans-serif; }
   .dept-contact-inner p { margin: 0; color: #c9d8d3; font-size: 10px; }
@@ -1076,6 +1072,55 @@ a.product-title{
 .market-registration-form > .market-checkout-button, .market-registration-form > small, .market-registration-form > .market-checkout-error { grid-column: 1 / -1; }
 .market-registration-form > small { color: #83928b; font-size: 9px; }
 .market-checkout-error { color: #b34436 !important; font-size: 10px !important; }
+
+/* Compact marketplace cards on the department homepage */
+.department-home .dept-market-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.department-home .market-fish-image { height: 150px; }
+.department-home .market-fresh-badge { padding: 5px 7px; font-size: 8px; }
+.department-home .market-fish-info { padding: 11px; }
+.department-home .market-fish-meta { gap: 6px; font-size: 8px; }
+.department-home .market-fish-info h3 { margin: 6px 0; font-size: 14px; }
+.department-home .market-fish-size { margin-bottom: 6px; padding: 3px 6px; font-size: 9px; }
+.department-home .market-fish-location,
+.department-home .market-fish-supplier { font-size: 9px; }
+.department-home .market-fish-supplier { margin-top: 5px; }
+.department-home .market-fish-price { margin-top: 10px; padding-top: 9px; }
+.department-home .market-fish-price > strong { font-size: 17px; }
+.department-home .market-fish-price > span { font-size: 9px; }
+.department-home .market-fish-price > small { font-size: 8px; }
+.department-home .market-buy-row { gap: 6px; margin-top: 9px; }
+.department-home .market-buy-row label { min-width: 70px; gap: 4px; padding: 0 6px; font-size: 9px; }
+.department-home .market-buy-row input { padding: 7px 0; font-size: 10px; }
+.department-home .market-buy-row button { min-height: 34px; padding: 0 8px; font-size: 9px; }
+.department-home .market-minimum-note { margin-top: 6px; }
+
+@media (max-width: 991.98px) {
+  .department-home .dept-market-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 700px) {
+  .department-home .dept-market-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .department-home .market-fish-image { height: 125px; }
+  .department-home .market-fish-info { padding: 10px; }
+  .department-home .market-fish-info h3 { font-size: 12px; }
+  .department-home .market-fish-meta { font-size: 7px; }
+}
+
+@media (max-width: 479.98px) {
+  .department-home .dept-market-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .department-home .market-fish-image { height: 115px; }
+  .department-home .market-fish-info { padding: 8px; }
+  .department-home .market-fish-info h3 { font-size: 11px; }
+  .department-home .market-fish-meta { flex-direction: column; gap: 2px; }
+  .department-home .market-fish-location,
+  .department-home .market-fish-supplier { font-size: 8px; }
+  .department-home .market-fish-price { gap: 3px; }
+  .department-home .market-fish-price > strong { font-size: 15px; }
+  .department-home .market-fish-price > small { width: 100%; margin-left: 0; }
+  .department-home .market-buy-row { flex-wrap: wrap; }
+  .department-home .market-buy-row label { min-width: 0; flex: 1; }
+  .department-home .market-buy-row button { min-width: 100%; }
+}
 @media (max-width: 991.98px) {
   .dept-market-grid, .marketplace-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .market-cart-layout { grid-template-columns: minmax(0,1fr) 280px; gap: 16px; }
