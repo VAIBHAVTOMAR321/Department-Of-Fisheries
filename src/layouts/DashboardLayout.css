@@ -4,6 +4,7 @@
   display: flex;
   color: #183f49;
 }
+
 .dash-sidebar {
   width: 245px;
   background: #fff;
@@ -17,6 +18,7 @@
 }
 .side-brand {
   padding: 0 7px 35px;
+  text-decoration: none;
 }
 .workspace-label {
   font-size: 9px;

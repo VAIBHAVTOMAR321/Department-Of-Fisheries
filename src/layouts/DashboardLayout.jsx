@@ -81,10 +81,10 @@ export default function DashboardLayout({ user, onLogout, onRoleChange }) {
           <span className="brand-mark">
             <LogoImage />
           </span>
-          <span>
+          <div className="brand-text">
             Department of Fisheries
-            <small>UTTARAKHAND · FISHERIES PORTAL</small>
-          </span>
+            <span>UTTARAKHAND · FISHERIES PORTAL</span>
+          </div>
         </Link>
         <div className="workspace-label">WORKSPACE</div>
         <div className="side-links">
