@@ -47,7 +47,8 @@ export default function Footer() {
       </div>
       <div className="footer-bottom">
         © 2026 Department of Fisheries, Uttarakhand{" "}
-        <span>Supporting sustainable freshwater fisheries.</span>
+        <span>Supporting sustainable freshwater fisheries.</span>{" "}
+        <span>Designed by <a href="https://brainrock.in/" target="_blank" rel="noopener noreferrer">Brainrock</a></span>
       </div>
     </footer>
   );

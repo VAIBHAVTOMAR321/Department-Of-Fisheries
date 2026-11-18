@@ -59,6 +59,13 @@
   display: flex;
   justify-content: space-between;
 }
+.footer-bottom a {
+  color: #d3e4e5;
+  text-decoration: none;
+}
+.footer-bottom a:hover {
+  color: #55d5c1;
+}
 @media (max-width: 700px) {
   .footer-main {
     grid-template-columns: 1fr 1fr;

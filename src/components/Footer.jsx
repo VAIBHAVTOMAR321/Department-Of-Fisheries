@@ -38,6 +38,7 @@ function Footer() {
           <span>© 2026 Department of Fisheries, Uttarakhand</span>
           <div><Link to="/contact">Contact</Link><Link to="/about">Department services</Link></div>
           <span>Sustainable freshwater fisheries</span>
+          <span>Designed by <a href="https://brainrock.in" target="_blank" rel="noopener noreferrer">Brainrock</a></span>
         </div>
       </div>
     </footer>
