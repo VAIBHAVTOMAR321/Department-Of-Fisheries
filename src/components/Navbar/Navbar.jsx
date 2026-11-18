@@ -37,22 +37,7 @@ export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
               <small>UTTARAKHAND</small>
             </span>
           </Link>
-         
-          <form className="nav-search" role="search" onSubmit={submitSearch}>
-            <Search size={17} aria-hidden="true" />
-            <label className="visually-hidden" htmlFor="marketplace-search">
-              Search fish, farmers or locations
-            </label>
-            <input
-              id="marketplace-search"
-              type="search"
-              placeholder="Search fish, farmers or districts..."
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-            />
-            <button type="submit">Search</button>
-          </form>
-           <div className="nav-leaders">
+          <div className="nav-leaders">
             <div className="nav-leader-card">
               <img
                 src={CMImg}
@@ -99,6 +84,20 @@ export default function Navbar({ onLogin, onRegister, cartCount = 0 }) {
               Track order <ArrowUpRight size={13} />
             </button>
             <NavLink className="nav-link nav-contact-mobile" to="/contact" onClick={closeMenu}>Contact</NavLink>
+            <form className="nav-search" role="search" onSubmit={submitSearch}>
+              <Search size={17} aria-hidden="true" />
+              <label className="visually-hidden" htmlFor="marketplace-search">
+                Search fish, farmers or locations
+              </label>
+              <input
+                id="marketplace-search"
+                type="search"
+                placeholder="Search fish, farmers or districts..."
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
+              <button type="submit">Search</button>
+            </form>
             <div className="nav-menu-actions">
               <button className="nav-login" type="button" onClick={onLogin}>
                 Dashboard login

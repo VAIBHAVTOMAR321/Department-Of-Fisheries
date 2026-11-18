@@ -23,13 +23,6 @@
   border-bottom: 1px solid #e4ecec;
   background: #fff;
 }
-.nav-leaders {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1;
-  max-width: 520px;
-}
 .nav-leader-card {
   display: flex;
   align-items: center;
@@ -89,9 +82,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  flex: 1;
-  max-width: 520px;
-  justify-content: center;
+  margin-left: auto;
+  flex-shrink: 0;
+  justify-content: flex-end;
 }
 .nav-leader-card {
   display: flex;
@@ -135,6 +128,8 @@
   display: flex;
   min-width: 0;
   height: 40px;
+  margin-top:8px;
+  margin-bottom:8px;
   align-items: center;
   border: 1px solid #dce8e8;
   border-radius: 4px;
@@ -309,7 +304,6 @@
 @media (max-width: 1050px) {
   .site-nav-head, .site-nav-menu nav { width: calc(100% - 36px); }
   .site-nav-head { grid-template-columns: minmax(190px, 220px) minmax(180px, 1fr) auto; gap: 14px; }
-  .nav-leaders { max-width: 360px; }
   .site-nav-menu nav { gap: 18px; }
   .nav-actions { gap: 4px; }
 }
@@ -318,16 +312,22 @@
   .site-nav-head {
     width: calc(100% - 30px);
     min-height: 0;
-    grid-template-columns: minmax(0, 1fr) auto auto;
     gap: 9px;
     padding: 10px 0;
   }
   .brand-mark { width: 38px; height: 38px; flex-basis: 38px; }
   .brand-copy strong { font-size: 12px; }
-  .nav-search { height: 38px; grid-column: 1 / -1; grid-row: 2; }
-  .nav-leaders { display: none; }
-  .nav-actions { grid-column: 2; grid-row: 1; }
-  .mobile-menu { display: grid; grid-column: 3; grid-row: 1; }
+  .nav-search { height: 38px; }
+  .nav-leaders {
+    display: flex;
+    margin-left: auto;
+    flex: 0 0 auto;
+    gap: 6px;
+  }
+  .nav-leader-card { padding: 3px; border-radius: 50%; }
+  .nav-leader-card img { width: 28px; height: 28px; }
+  .nav-leader-card > div { display: none; }
+  .mobile-menu { display: grid; flex: 0 0 auto; }
   .site-nav-menu { display: none; }
   .site-nav-menu.open {
     position: absolute;
@@ -362,6 +362,9 @@
   .brand-mark { width: 34px; height: 34px; flex-basis: 34px; }
   .brand-copy strong { font-size: 10px; }
   .brand-copy small { margin-top: 3px; font-size: 6px; }
+  .nav-leaders { gap: 4px; }
+  .nav-leader-card { padding: 2px; }
+  .nav-leader-card img { width: 24px; height: 24px; }
   .nav-login { display: none; }
   .nav-cart { min-height: 34px; gap: 4px; padding: 0 7px; font-size: 9px;
   margin-top: 12px; 
