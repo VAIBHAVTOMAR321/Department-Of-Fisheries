@@ -167,6 +167,7 @@
   background: #087f7a;
   font-size: 10px;
   font-weight: 700;
+  border-radius: 4px;
 }
 .nav-search button:hover { background: #086c67; }
 .nav-actions {
