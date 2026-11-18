@@ -151,13 +151,6 @@ function Home({ onLogin, onRegister, onAddToCart, cart }) {
 
   return (
     <main className="department-home">
-      <div className="dept-official-bar">
-        <div className="container-xl">
-          <span><MapPinned size={14} /> Government of Uttarakhand</span>
-          <span>Department of Fisheries</span>
-        </div>
-      </div>
-
       <section className="dept-hero">
         <div className="dept-hero-slides" aria-hidden="true">
           {heroSlides.map((slide, index) => (
@@ -375,7 +368,7 @@ function Home({ onLogin, onRegister, onAddToCart, cart }) {
         </div>
       </section>
 
-      <section className="dept-how-section">
+      <section className="dept-how-section" id="marketplace-process">
         <div className="container-xl">
           <div className="dept-section-heading dept-how-heading">
             <div>

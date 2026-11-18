@@ -7,12 +7,13 @@ import { getListings } from "../utils/store";
 function Shop({ cart, onAddToCart }) {
   const [searchParams] = useSearchParams();
   const selectedSpecies = searchParams.get("species") || "";
-  const [query, setQuery] = useState("");
+  const searchQuery = searchParams.get("search") || "";
+  const [query, setQuery] = useState(searchQuery);
   const [category, setCategory] = useState("All fish");
   const listings = getListings();
   useEffect(() => {
-    setQuery("");
-  }, [selectedSpecies]);
+    setQuery(searchQuery);
+  }, [selectedSpecies, searchQuery]);
   const availableListings = useMemo(() => {
     const uniqueListings = new Map();
     listings.forEach((listing) => {

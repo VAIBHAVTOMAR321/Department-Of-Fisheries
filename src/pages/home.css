@@ -558,24 +558,6 @@ a.product-title{
     color: var(--dept-ink);
     background: #fff;
   }
-  .dept-official-bar {
-    color: #e8f1ee;
-    background: #123b47;
-    font-size: 10px;
-    letter-spacing: .04em;
-  }
-  .dept-official-bar .container-xl {
-    display: flex;
-    min-height: 34px;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .dept-official-bar span {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-  }
-  .dept-official-bar span:first-child svg { color: #9dc9b3; }
   .dept-hero {
     position: relative;
 
@@ -807,7 +789,6 @@ a.product-title{
     .dept-leader-card span { font-size: 8px; }
   }
   @media (max-width: 767.98px) {
-    .dept-official-bar .container-xl { min-height: 31px; font-size: 8px; }
     .dept-hero, .dept-hero-inner { min-height: unset; }
     .dept-hero-inner {
       grid-template-areas:
@@ -864,7 +845,6 @@ a.product-title{
     .dept-contact-inner .dept-button { grid-column: 2; justify-self: start; }
   }
 @media (max-width: 479.98px) {
-    .dept-official-bar span:last-child { font-size: 7px; }
     .dept-hero, .dept-hero-inner { min-height: unset; }
     .dept-hero-actions { align-items: stretch; flex-direction: column; max-width: 260px; }
     .dept-button { justify-content: space-between; }
