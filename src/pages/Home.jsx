@@ -5,14 +5,21 @@ import {
   ArrowUpRight,
   BookOpenCheck,
   Building2,
+  CreditCard,
   Fish,
   HandCoins,
   MapPinned,
+  PackageCheck,
+  Search,
+  ShieldCheck,
   ShoppingCart,
   Sprout,
+  Truck,
+  Users,
   Waves,
 } from "lucide-react";
 import MarketplaceFishCard from "../components/MarketplaceFishCard";
+import { categories as fishCategories } from "../data/products.js";
 import { getDeliveries, getListings, getUsers } from "../utils/store";
 import "../pages/home.css";
 
@@ -58,7 +65,61 @@ const initiatives = [
   },
 ];
 
-function Home({ onLogin, onAddToCart, cart }) {
+const marketplaceBenefits = [
+  {
+    icon: Users,
+    title: "Local fisheries network",
+    text: "Connect with farmers and hatcheries across Uttarakhand.",
+  },
+  {
+    icon: PackageCheck,
+    title: "Clear fish listings",
+    text: "Review available species, life stages and quantities.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Order with confidence",
+    text: "Check supplier and stock details before adding to your basket.",
+  },
+  {
+    icon: Truck,
+    title: "Order updates",
+    text: "Follow order and delivery information in the dashboard.",
+  },
+];
+
+const shoppingSteps = [
+  {
+    icon: Search,
+    title: "Explore fish",
+    text: "Browse current listings or choose a species to see what is available.",
+    link: "/shop",
+    linkText: "Browse listings",
+  },
+  {
+    icon: ShoppingCart,
+    title: "Add to your basket",
+    text: "Select a listing quantity. Orders require at least 50 kg per listing.",
+    link: "/cart",
+    linkText: "View basket",
+  },
+  {
+    icon: CreditCard,
+    title: "Confirm your order",
+    text: "Provide buyer and delivery details to place an order in the demo.",
+    link: "/cart",
+    linkText: "Review checkout",
+  },
+  {
+    icon: Truck,
+    title: "Follow updates",
+    text: "View order and delivery updates from your fisheries workspace.",
+    link: "/app/orders",
+    linkText: "Open orders",
+  },
+];
+
+function Home({ onLogin, onRegister, onAddToCart, cart }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const listings = getListings();
   const deliveries = getDeliveries();
@@ -169,6 +230,20 @@ function Home({ onLogin, onAddToCart, cart }) {
         </div>
       </section>
 
+      <section className="dept-trust-strip" aria-label="Marketplace highlights">
+        <div className="container-xl dept-trust-grid">
+          {marketplaceBenefits.map(({ icon: Icon, title, text }) => (
+            <article className="dept-trust-item" key={title}>
+              <span><Icon size={18} /></span>
+              <div>
+                <strong>{title}</strong>
+                <small>{text}</small>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
       <section className="dept-stats-section" aria-label="Fisheries dashboard snapshot">
         <div className="container-xl">
           <div className="dept-stats-heading">
@@ -191,6 +266,35 @@ function Home({ onLogin, onAddToCart, cart }) {
             <span className="dept-status-dot" />
             {deliveries.length.toLocaleString("en-IN")} deliveries tracked in the fisheries dashboard
           </p>
+        </div>
+      </section>
+
+      <section className="dept-categories-section">
+        <div className="container-xl">
+          <div className="dept-section-heading">
+            <div>
+              <span className="dept-section-kicker">EXPLORE THE MARKET</span>
+              <h2>Browse by fish species</h2>
+              <p>Choose a species to see matching fish and life-stage listings.</p>
+            </div>
+            <Link className="dept-text-link" to="/categories">
+              View fish directory <ArrowUpRight size={16} />
+            </Link>
+          </div>
+          <div className="dept-category-grid">
+            {fishCategories.map((category) => (
+              <Link
+                className="dept-category-card"
+                key={category.slug}
+                to={`/shop?species=${encodeURIComponent(category.name)}`}
+              >
+                <img src={category.image} alt="" loading="lazy" />
+                <span>{category.count}</span>
+                <strong>{category.name}</strong>
+                <small>Browse listings <ArrowRight size={13} /></small>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -228,6 +332,27 @@ function Home({ onLogin, onAddToCart, cart }) {
         </div>
       </section>
 
+      <section className="dept-partner-banner">
+        <div className="container-xl dept-partner-inner">
+          <div className="dept-partner-copy">
+            <span className="dept-section-kicker">A MARKETPLACE THAT GROWS WITH YOU</span>
+            <h2>Are you a fish farmer or fisheries partner?</h2>
+            <p>
+              Explore the farmer and partner workspace to manage listings,
+              connect with buyers and support Uttarakhand fisheries.
+            </p>
+            <button className="dept-button dept-button-primary" type="button" onClick={onRegister}>
+              Join as a partner <ArrowUpRight size={16} />
+            </button>
+          </div>
+          <div className="dept-partner-steps" aria-label="Partner workspace steps">
+            <div><strong>01</strong><span>Set up your profile</span></div>
+            <div><strong>02</strong><span>Manage fish listings</span></div>
+            <div><strong>03</strong><span>Coordinate orders</span></div>
+          </div>
+        </div>
+      </section>
+
       <section className="dept-services-section">
         <div className="container-xl">
           <div className="dept-section-heading">
@@ -247,6 +372,64 @@ function Home({ onLogin, onAddToCart, cart }) {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="dept-how-section">
+        <div className="container-xl">
+          <div className="dept-section-heading dept-how-heading">
+            <div>
+              <span className="dept-section-kicker">SIMPLE · CONVENIENT · CONNECTED</span>
+              <h2>How ordering works</h2>
+              <p>From exploring current listings to following order updates.</p>
+            </div>
+          </div>
+          <div className="dept-how-grid">
+            {shoppingSteps.map(({ icon: Icon, title, text, link, linkText }, index) => (
+              <article className="dept-how-card" key={title}>
+                <strong className="dept-how-number">{String(index + 1).padStart(2, "0")}</strong>
+                <span className="dept-how-icon"><Icon size={19} /></span>
+                <h3>{title}</h3>
+                <p>{text}</p>
+                {link === "/app/orders" ? (
+                  <button type="button" onClick={onLogin}>{linkText} <ArrowRight size={13} /></button>
+                ) : (
+                  <Link to={link}>{linkText} <ArrowRight size={13} /></Link>
+                )}
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="dept-order-support">
+        <div className="container-xl dept-order-support-inner">
+          <div>
+            <span className="dept-section-kicker">ORDER SUPPORT</span>
+            <h2>Need to check an order?</h2>
+            <p>Sign in to the fisheries workspace to review buyer orders and delivery updates.</p>
+          </div>
+          <button className="dept-button dept-button-light" type="button" onClick={onLogin}>
+            Open fisheries dashboard <ArrowUpRight size={15} />
+          </button>
+        </div>
+      </section>
+
+      <section className="dept-initiative-section">
+        <div className="container-xl dept-initiative-inner">
+          <span className="dept-initiative-seal"><Fish size={26} /></span>
+          <div>
+            <span className="dept-section-kicker">DEPARTMENT INITIATIVE</span>
+            <h2>Strengthening fisheries. Connecting communities.</h2>
+            <p>
+              This marketplace brings together current fish listings and
+              department services to support fisheries communities across
+              Uttarakhand.
+            </p>
+          </div>
+          <Link className="dept-text-link" to="/about">
+            About the department <ArrowUpRight size={16} />
+          </Link>
         </div>
       </section>
 
