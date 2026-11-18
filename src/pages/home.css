@@ -405,10 +405,10 @@ a.product-title{
 .order-status { color: #5b866e; }
 .order-status i { margin-right: 4px; }
 .order-payment { color: #77877e; font-size: 9px; }
-.about-hero { position: relative; display: flex; min-height: 470px; align-items: center; overflow: hidden; color: #fff; background: #173a38; }
+.about-hero { position: relative; display: flex; min-height: 300px; align-items: center; overflow: hidden; color: #fff; background: #173a38; }
 .about-hero-image { position: absolute; inset: 0; background: linear-gradient(90deg,#173b39ed 0%,#173b3973 53%,#173b3920),url("https://images.unsplash.com/photo-1510130387422-82bed34b37e9?auto=format&fit=crop&w=2000&q=85") center 48%/cover; }
 .about-hero-copy { position: relative; padding-top: 65px; padding-bottom: 65px; }
-.about-hero h1, .contact-hero h1 { margin: 0; color: white; font-family: var(--serif); font-size: clamp(49px,7vw,74px); font-weight: 500; line-height: 1.03; }
+.about-hero h1, .contact-hero h1 { margin: 0; color: white; font-family: var(--serif); font-size:24px; font-weight: 500; line-height: 1.03; }
 .about-hero-copy p { max-width: 430px; margin: 20px 0 0; color: #d5e0d8; font-size: 12px; line-height: 1.9; }
 .about-intro { display: grid; grid-template-columns: .9fr 1.1fr; gap: 65px; }
 .about-intro h2, .about-bottom h2 { margin: 0; color: var(--ink); font-family: var(--serif); font-size: clamp(32px,4vw,43px); font-weight: 500; line-height: 1.2; }
