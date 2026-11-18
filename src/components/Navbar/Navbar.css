@@ -23,44 +23,6 @@
   border-bottom: 1px solid #e4ecec;
   background: #fff;
 }
-.nav-leader-card {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 4px 8px;
-  border: 1px solid #e4ecec;
-  border-radius: 8px;
-  background: #fff;
-  flex: 1;
-  min-width: 0;
-}
-.nav-leader-card img {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-.nav-leader-card > div {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-.nav-leader-card strong {
-  font: 700 9px "DM Sans", sans-serif;
-  color: #123b47;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.nav-leader-card span {
-  font: 700 7px "DM Sans", sans-serif;
-  color: #708b89;
-  letter-spacing: .5px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 .site-nav-head {
   display: flex;
   align-items: center;
@@ -98,8 +60,8 @@
   min-width: 0;
 }
 .nav-leader-card img {
-  width: 34px;
-  height: 34px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
@@ -325,7 +287,7 @@
     gap: 6px;
   }
   .nav-leader-card { padding: 3px; border-radius: 50%; }
-  .nav-leader-card img { width: 28px; height: 28px; }
+  .nav-leader-card img { width: 34px; height: 34px; }
   .nav-leader-card > div { display: none; }
   .mobile-menu { display: grid; flex: 0 0 auto; }
   .site-nav-menu { display: none; }
@@ -364,7 +326,7 @@
   .brand-copy small { margin-top: 3px; font-size: 6px; }
   .nav-leaders { gap: 4px; }
   .nav-leader-card { padding: 2px; }
-  .nav-leader-card img { width: 24px; height: 24px; }
+  .nav-leader-card img { width: 28px; height: 28px; }
   .nav-login { display: none; }
   .nav-cart { min-height: 34px; gap: 4px; padding: 0 7px; font-size: 9px;
   margin-top: 12px; 
