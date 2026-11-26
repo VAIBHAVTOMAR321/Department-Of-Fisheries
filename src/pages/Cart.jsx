@@ -108,7 +108,7 @@ function Cart({ cart, listings, user, onUpdateCart, onPlaceOrder }) {
             <div><span>Fish listings</span><strong>{items.length}</strong></div>
             <div><span>Total quantity</span><strong>{items.reduce((sum, item) => sum + item.quantity, 0).toLocaleString("en-IN")} kg</strong></div>
             <div className="market-summary-total"><span>Estimated total</span><strong>₹{total.toLocaleString("en-IN")}</strong></div>
-            <p>Prices use each farmer’s listed price. The order will be visible in your dashboard and to the supplying farmer.</p>
+            <p>Prices use each farmer’s listed price. After registration, you’ll continue to your dashboard to pay and track delivery.</p>
             {user?.role === "buyer" ? (
               <button className="market-checkout-button" type="button" onClick={placeOrder}>
                 Place order <ArrowRight size={16} />
@@ -119,7 +119,7 @@ function Cart({ cart, listings, user, onUpdateCart, onPlaceOrder }) {
               </button>
             )}
             {error && <p className="market-checkout-error" role="alert">{error}</p>}
-            <small className="market-demo-note"><CheckCircle2 size={13} /> Demo checkout · no payment is collected</small>
+            <small className="market-demo-note"><CheckCircle2 size={13} /> Demo payment is simulated · no real money is transferred</small>
           </aside>
         </div>
       )}

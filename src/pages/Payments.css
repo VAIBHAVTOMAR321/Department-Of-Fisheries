@@ -349,6 +349,12 @@
 .payment-form {
   margin-top: 12px;
 }
+.market-order-meta {
+  margin: -5px 0 12px;
+  color: #82999d;
+  font-size: 9px;
+  overflow-wrap: anywhere;
+}
 .payment-form label {
   font-size: 10px;
   color: #5c777c;

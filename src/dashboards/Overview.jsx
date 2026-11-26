@@ -13,6 +13,8 @@ import {
   AlertTriangle,
   CheckCircle2,
   Activity,
+  ClipboardList,
+  WalletCards,
 } from "lucide-react";
 import {
   BarChart,
@@ -27,7 +29,7 @@ import {
 } from "recharts";
 import StatCard from "../components/StatCard/StatCard";
 import StatusBadge from "../components/StatusBadge/StatusBadge";
-import { getListings, getDeliveries, getUsers } from "../utils/store";
+import { getListings, getDeliveries, getUsers, getOrders } from "../utils/store";
 import "./Overview.css";
 const trend = [
   { day: "Mon", supply: 34, orders: 21 },
@@ -44,6 +46,13 @@ export default function Overview() {
   const listings = getListings(),
     deliveries = getDeliveries(),
     users = getUsers();
+  const isBuyer = user.role === "buyer";
+  const buyerOrders = isBuyer
+    ? getOrders().filter((order) => order.buyerEmail === user.email)
+    : [];
+  const buyerDeliveries = isBuyer
+    ? deliveries.filter((delivery) => delivery.buyerEmail === user.email)
+    : [];
   const isSupplier = ["farmer", "hatchery", "dam", "contractor"].includes(
     user.role,
   );
@@ -63,18 +72,30 @@ export default function Overview() {
             <span>✦</span>
           </h1>
           <p>
-            {isSupplier
+            {isBuyer
+              ? "Your marketplace orders, payments, and deliveries are here."
+              : isSupplier
               ? "Here’s what’s happening with your supply today."
               : "Here’s your fisheries marketplace at a glance."}
           </p>
         </div>
-        <button className="primary-btn" onClick={() => nav("/app/listings")}>
+        <button
+          className="primary-btn"
+          onClick={() => nav(isBuyer ? "/app/orders" : "/app/listings")}
+        >
           <Plus size={16} />{" "}
-          {isSupplier ? "Add fish listing" : "Manage listings"}
+          {isBuyer ? "View my orders" : isSupplier ? "Add fish listing" : "Manage listings"}
         </button>
       </div>
       <div className="stat-grid">
-        {(isSupplier
+        {(isBuyer
+          ? [
+              ["My orders", buyerOrders.length, ClipboardList, "teal", "Marketplace orders"],
+              ["Payment due", buyerOrders.filter((order) => order.paymentStatus !== "Paid").length, WalletCards, "orange", "Awaiting payment"],
+              ["In delivery", buyerDeliveries.filter((delivery) => !["Received by buyer"].includes(delivery.status)).length, Truck, "blue", "Track your packages"],
+              ["Delivered", buyerDeliveries.filter((delivery) => delivery.status === "Received by buyer").length, CheckCircle2, "purple", "Receipt confirmed"],
+            ]
+          : isSupplier
           ? [
               [
                 "My active listings",
@@ -137,7 +158,7 @@ export default function Overview() {
           <StatCard key={l} label={l} value={v} icon={I} tone={t} change={c} />
         ))}
       </div>
-      {!isSupplier && (
+      {!isSupplier && !isBuyer && (
         <div className="alert-strip">
           <div>
             <AlertTriangle size={18} />
@@ -153,6 +174,7 @@ export default function Overview() {
           </button>
         </div>
       )}
+      {!isBuyer && <>
       <div className="overview-grid">
         <section className="panel chart-panel">
           <div className="panel-title">
@@ -314,6 +336,7 @@ export default function Overview() {
           </table>
         </div>
       </section>
+      </>}
     </div>
   );
 }

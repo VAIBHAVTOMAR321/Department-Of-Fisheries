@@ -122,6 +122,17 @@
   font-size: 9px;
   font-weight: 500;
 }
+.dashboard-order-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 0 19px 15px;
+}
+.dashboard-order-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
 .orders-empty {
   display: grid;
   justify-items: center;
@@ -153,6 +164,10 @@
     padding-left: 13px;
   }
   .dashboard-order-lines {
+    padding-right: 13px;
+    padding-left: 13px;
+  }
+  .dashboard-order-actions {
     padding-right: 13px;
     padding-left: 13px;
   }

@@ -14,10 +14,11 @@ Open the local URL printed by Vite (normally http://localhost:5173).
 ## Demo workflow
 
 1. Open **Login** or **Get Started** and choose a role. No password or backend is needed.
-2. Sign in as **Fish Farmer**, **Hatchery Farmer**, **Dam Farmer** or **River Contractor** and add a fish listing with quantity, price, location, harvest date and freshness duration.
-3. Sign in as **Inventory Manager** to review listings, send counteroffers, accept a deal and manage negotiation status.
-4. Use **Delivery management** to schedule pickup, assign a driver, enable cold-chain transport and update delivery status.
-5. Sign in as **Administrator** to review marketplace analytics, suppliers, listings, negotiations and delivery operations.
+2. Browse fish from the public marketplace, add items to the basket and register as a buyer at checkout.
+3. Checkout opens the buyer dashboard's **Payments** page. Complete the simulated payment to make the order eligible for dispatch.
+4. The **Inventory Manager** can review buyer payment status and assign a delivery partner. The **Administrator** can monitor payments and delivery progress.
+5. **Delivery Personnel** update shipment milestones. Buyers track shipments and confirm receipt after delivery; suppliers can also follow shipments for their fish.
+6. To use the supply-deal workflow, sign in as **Fish Farmer**, **Hatchery Farmer**, **Dam Farmer** or **River Contractor** to add fish listings, then use the Inventory Manager dashboard to negotiate and manage deals.
 
 ## Demo roles
 
@@ -28,10 +29,11 @@ Open the local URL printed by Vite (normally http://localhost:5173).
 - Dam Farmer
 - River Contractor
 - Delivery Personnel
+- Fish Buyer
 
 ## Persistence and limitations
 
-Listings, users and delivery records are stored in browser `localStorage`. This is a static frontend demonstration: authentication is simulated, data is local to the browser, and no real payment, messaging, GPS, API, server-side validation or live logistics integrations are connected. Use a backend, secure authentication and appropriate operational controls before production deployment.
+Listings, users, orders, payment records and delivery tracking are stored in browser `localStorage`. This is a static frontend demonstration: authentication and payments are simulated, data is local to the browser, and no real payment, messaging, GPS, API, server-side validation or live logistics integrations are connected. Use a backend, secure authentication and appropriate operational controls before production deployment.
 
 ## Project structure
 
@@ -47,7 +49,7 @@ src/
   utils/            # localStorage persistence helpers
 ```
 
-## Updated order, payment and delivery workflow
+## Supply-deal payment and delivery workflow
 
 1. Fish Farmer submits a fish listing.
 2. Inventory Manager starts price negotiation and sends an offer.
@@ -57,6 +59,13 @@ src/
 6. Inventory Manager records payment in Payments. This project currently simulates payment in localStorage; it does not transfer real money.
 7. After payment, Inventory Manager uses `Assign delivery partner` on the paid deal. Partner name, phone, email, destination, pickup time, estimated arrival and cold-chain requirement are recorded.
 8. Farmer can view the delivery partner and ETA in Deliveries. Delivery Personnel can update shipment milestones: Assigned, Picked up, In transit, Out for delivery and Delivered.
-9. Farmer confirms receipt. Admin and Inventory Manager can view the complete tracking history in Deliveries.
+9. Inventory Manager confirms receipt of the purchased fish. Admin and Inventory Manager can view the complete tracking history in Deliveries.
+
+## Marketplace buyer order workflow
+
+1. A buyer places an order from the public marketplace. Checkout registers the buyer and opens the Payments dashboard.
+2. The buyer completes a simulated payment. The order and transaction appear in buyer, Admin and Inventory Manager dashboards.
+3. Inventory Manager assigns a delivery partner to the buyer's delivery address. The assigned shipment appears in the buyer, supplier, Inventory Manager, Admin and delivery-personnel tracking views.
+4. Delivery Personnel update the shipment through Delivered. The buyer confirms receipt, and the final status is reflected in the order and delivery history.
 
 All workflow data is stored in browser localStorage for this demo. A production deployment should move users, listings, payments, delivery assignments and tracking events to authenticated backend APIs, and integrate a real payment gateway and carrier tracking service.

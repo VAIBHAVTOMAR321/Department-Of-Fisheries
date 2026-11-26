@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
-import { BadgeCheck, ClipboardList, MapPin, Package } from "lucide-react";
-import { getOrders } from "../utils/store";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { BadgeCheck, ClipboardList, MapPin, Package, Truck, WalletCards } from "lucide-react";
+import { getDeliveries, getOrders } from "../utils/store";
 import { getFishImage } from "../data/fishImages";
 import "./Orders.css";
 
@@ -9,7 +9,9 @@ const supplierRoles = ["farmer", "hatchery", "dam", "contractor"];
 
 export default function Orders() {
   const { user } = useOutletContext();
+  const navigate = useNavigate();
   const [orders] = useState(getOrders());
+  const deliveries = getDeliveries();
   const isSupplier = supplierRoles.includes(user.role);
   const isBuyer = user.role === "buyer";
   const visibleOrders = orders.filter((order) => {
@@ -84,6 +86,26 @@ export default function Orders() {
                   <span>{new Date(order.createdAt).toLocaleString("en-IN")}</span>
                   <strong><span>Order total</span> ₹{total.toLocaleString("en-IN")}</strong>
                 </footer>
+                {isBuyer && (
+                  <div className="dashboard-order-actions">
+                    {order.paymentStatus !== "Paid" && (
+                      <button
+                        className="primary-btn"
+                        onClick={() => navigate("/app/payments")}
+                      >
+                        <WalletCards size={15} /> Pay for order
+                      </button>
+                    )}
+                    {deliveries.some((delivery) => delivery.orderId === order.id) && (
+                      <button
+                        className="outline-btn"
+                        onClick={() => navigate("/app/deliveries")}
+                      >
+                        <Truck size={15} /> Track delivery
+                      </button>
+                    )}
+                  </div>
+                )}
               </article>
             );
           })}

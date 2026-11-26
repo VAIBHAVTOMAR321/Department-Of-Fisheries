@@ -87,7 +87,23 @@ function AppContent() {
 
   const login = () => {
     const r = roles.find((x) => x.id === role);
-    const u = { name, role, roleLabel: r?.label, email, location: userLocation };
+    const normalizedEmail = email.trim().toLowerCase();
+    const savedBuyer =
+      role === "buyer"
+        ? getUsers().find(
+            (savedUser) =>
+              savedUser.role === "buyer" &&
+              savedUser.email?.trim().toLowerCase() === normalizedEmail,
+          )
+        : null;
+    const u = {
+      ...(savedBuyer || {}),
+      name: savedBuyer?.name || name.trim(),
+      role,
+      roleLabel: r?.label,
+      email: normalizedEmail,
+      location: savedBuyer?.location || userLocation,
+    };
     setUser(u);
     localStorage.setItem("aqua_user", JSON.stringify(u));
     setDialog("");
@@ -176,7 +192,8 @@ function AppContent() {
       buyerPhone: registeredUser.phone,
       deliveryLocation: registeredUser.location,
       items: orderItems,
-      status: "Order placed",
+      status: "Payment pending",
+      paymentStatus: "Pending",
       createdAt: new Date().toISOString(),
     };
     const remainingCart = [];
@@ -198,7 +215,7 @@ function AppContent() {
     localStorage.setItem("aqua_user", JSON.stringify(registeredUser));
     setUser(registeredUser);
     setCart(remainingCart);
-    navigate("/app/orders");
+    navigate("/app/payments");
     return "";
   };
 
@@ -281,10 +298,15 @@ function AppContent() {
                 onChange={(e) => {
                   const nextRole = e.target.value;
                   setRole(nextRole);
-                  const profile = demoProfiles[nextRole];
+                  const savedBuyer =
+                    nextRole === "buyer"
+                      ? getUsers().filter((savedUser) => savedUser.role === "buyer").slice(-1)[0]
+                      : null;
+                  const profile = savedBuyer || demoProfiles[nextRole];
                   if (profile) {
                     setName(profile.name);
                     setEmail(profile.email);
+                    if (profile.location) setUserLocation(profile.location);
                   }
                 }}
               >

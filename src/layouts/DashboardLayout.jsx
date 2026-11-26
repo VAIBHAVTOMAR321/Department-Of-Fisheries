@@ -59,7 +59,9 @@ export default function DashboardLayout({ user, onLogout, onRoleChange }) {
     user.role === "delivery"
       ? links.filter((x) => ["Overview", "Deliveries"].includes(x[0]))
       : user.role === "buyer"
-        ? links.filter((x) => ["Overview", "Orders"].includes(x[0]))
+        ? links.filter((x) =>
+            ["Overview", "Payments", "Deliveries", "Orders"].includes(x[0]),
+          )
         : supplierRoles.includes(user.role)
         ? links.filter((x) =>
             [

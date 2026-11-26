@@ -12,18 +12,22 @@ import {
   Navigation,
   ClipboardList,
 } from "lucide-react";
-import { getDeliveries, saveDeliveries } from "../utils/store";
+import {
+  getDeliveries,
+  saveDeliveries,
+  getOrders,
+  saveOrders,
+} from "../utils/store";
 import StatusBadge from "../components/StatusBadge/StatusBadge";
 import "./Operations.css";
 import "./Deliveries.css";
 
-const stages = [
+const shipmentStages = [
   "Assigned",
   "Picked up",
   "In transit",
   "Out for delivery",
   "Delivered",
-  "Received by inventory",
 ];
 const supplierRoles = ["farmer", "hatchery", "dam", "contractor"];
 export default function Deliveries() {
@@ -32,25 +36,40 @@ export default function Deliveries() {
   const deliveryRole = user.role === "delivery";
   const manager = ["admin", "inventory"].includes(user.role);
   const inventoryRole = user.role === "inventory";
+  const buyerRole = user.role === "buyer";
   const [items, setItems] = useState(getDeliveries());
+  const [activeDeliveryType, setActiveDeliveryType] = useState("buyer");
   const visible = useMemo(
     () =>
       items.filter(
         (x) =>
           manager ||
           (farmer
-            ? x.supplier === user.name
+            ? String(x.supplier || "").split(", ").includes(user.name)
             : deliveryRole
               ? x.driver === user.name || x.driverEmail === user.email
-              : false),
+              : buyerRole
+                ? x.buyerEmail === user.email
+                : false),
       ),
-    [items, manager, farmer, deliveryRole, user.name, user.email],
+    [items, manager, farmer, deliveryRole, buyerRole, user.name, user.email],
   );
+  const hasBuyerDeliveries = visible.some((item) => Boolean(item.orderId));
+  const hasFarmerDeliveries = visible.some((item) => !item.orderId);
+  const showDeliveryTabs = hasBuyerDeliveries && hasFarmerDeliveries;
+  const displayedItems = showDeliveryTabs
+    ? visible.filter((item) =>
+        activeDeliveryType === "buyer" ? Boolean(item.orderId) : !item.orderId,
+      )
+    : visible;
   const update = (next) => {
     setItems(next);
     saveDeliveries(next);
   };
   const changeStage = (item, nextStage) => {
+    const recipientStage = item.orderId
+      ? "Received by buyer"
+      : "Received by inventory";
     const event = {
       status: nextStage,
       at: new Date().toISOString(),
@@ -58,8 +77,8 @@ export default function Deliveries() {
       note:
         nextStage === "Delivered"
           ? "Delivery partner marked parcel delivered."
-          : nextStage === "Received by inventory"
-            ? "Inventory Manager confirmed receipt of the parcel."
+          : nextStage === recipientStage
+            ? `${item.orderId ? "Buyer" : "Inventory Manager"} confirmed receipt of the parcel.`
             : `Shipment status updated to ${nextStage}.`,
     };
     update(
@@ -74,6 +93,19 @@ export default function Deliveries() {
           : x,
       ),
     );
+    if (item.orderId) {
+      const orders = getOrders().map((order) =>
+        order.id === item.orderId
+          ? {
+              ...order,
+              status: nextStage,
+              deliveryStatus: nextStage,
+              ...(nextStage === recipientStage ? { receivedAt: event.at } : {}),
+            }
+          : order,
+      );
+      saveOrders(orders);
+    }
   };
   return (
     <div className="ops-page delivery-page">
@@ -81,14 +113,18 @@ export default function Deliveries() {
         <div>
           <div className="welcome-kicker">LAST-MILE OPERATIONS</div>
           <h1>
-            {farmer
+            {buyerRole
+              ? "My deliveries"
+              : farmer
               ? "Track my delivery"
               : deliveryRole
                 ? "My assigned shipments"
                 : "Delivery tracking & management"}
           </h1>
           <p>
-            {farmer
+            {buyerRole
+              ? "Follow your paid order from dispatch through delivery and confirm receipt."
+              : farmer
               ? "Track your delivery partner, parcel journey and expected arrival date."
               : deliveryRole
                 ? "Update shipment milestones as you move each parcel."
@@ -96,17 +132,51 @@ export default function Deliveries() {
           </p>
         </div>
       </div>
+      {showDeliveryTabs && (
+        <div className="delivery-type-tabs" role="tablist" aria-label="Delivery type">
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeDeliveryType === "buyer"}
+            className={activeDeliveryType === "buyer" ? "active" : ""}
+            onClick={() => setActiveDeliveryType("buyer")}
+          >
+            Buyer orders
+            <span>{visible.filter((item) => item.orderId).length}</span>
+          </button>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeDeliveryType === "farmer"}
+            className={activeDeliveryType === "farmer" ? "active" : ""}
+            onClick={() => setActiveDeliveryType("farmer")}
+          >
+            Farmer orders
+            <span>{visible.filter((item) => !item.orderId).length}</span>
+          </button>
+        </div>
+      )}
       <div className="ops-summary">
         <div>
           <Truck />
-          <b>{visible.length}</b>
-          <span>{farmer ? "Your shipments" : "Visible shipments"}</span>
+          <b>{displayedItems.length}</b>
+          <span>
+            {showDeliveryTabs
+              ? activeDeliveryType === "buyer"
+                ? "Buyer order shipments"
+                : "Farmer supply shipments"
+              : buyerRole
+                ? "Your deliveries"
+                : farmer
+                  ? "Your shipments"
+                  : "Visible shipments"}
+          </span>
         </div>
         <div>
           <Navigation />
           <b>
             {
-              visible.filter((x) =>
+              displayedItems.filter((x) =>
                 ["In transit", "Out for delivery", "Picked up"].includes(
                   x.status,
                 ),
@@ -119,8 +189,8 @@ export default function Deliveries() {
           <CheckCircle2 />
           <b>
             {
-              visible.filter((x) =>
-                ["Delivered", "Received by inventory"].includes(x.status),
+              displayedItems.filter((x) =>
+                ["Delivered", "Received by inventory", "Received by buyer"].includes(x.status),
               ).length
             }
           </b>
@@ -128,7 +198,13 @@ export default function Deliveries() {
         </div>
       </div>
       <div className="delivery-list">
-        {visible.map((x) => (
+        {displayedItems.map((x) => {
+          const recipientStage = x.orderId
+            ? "Received by buyer"
+            : "Received by inventory";
+          const stages = [...shipmentStages, recipientStage];
+          const terminalStage = recipientStage;
+          return (
           <article className="delivery-card tracking-card" key={x.id}>
             <div className="delivery-id">
               <div>
@@ -138,6 +214,14 @@ export default function Deliveries() {
               <StatusBadge status={x.status} />
             </div>
             <h3>{x.fish}</h3>
+            <p className="delivery-flow-label">
+              <b>{x.orderId ? "Buyer marketplace order" : "Farmer supply order"}</b>
+              {x.orderId
+                ? ` · ${x.orderId} · ${x.buyerName}`
+                : x.listingId
+                  ? ` · Listing ${x.listingId}`
+                  : ""}
+            </p>
             <div className="tracking-route">
               <div>
                 <MapPin size={15} />
@@ -154,7 +238,7 @@ export default function Deliveries() {
                 <div>
                   <small>DELIVER TO</small>
                   <b>
-                    {x.destination || x.supplierLocation || "Farmer location"}
+                    {x.destination || x.supplierLocation || "Receiving location"}
                   </b>
                 </div>
               </div>
@@ -174,6 +258,15 @@ export default function Deliveries() {
                   {x.driverPhone || "Not provided"}
                 </b>
               </div>
+              {x.orderId && (
+                <div>
+                  <small>BUYER CONTACT</small>
+                  <b>
+                    <UserRound size={14} />
+                    {x.buyerName} · {x.buyerPhone || x.buyerEmail}
+                  </b>
+                </div>
+              )}
               <div>
                 <small>ESTIMATED ARRIVAL</small>
                 <b>
@@ -191,6 +284,14 @@ export default function Deliveries() {
                 <b>
                   <Snowflake size={14} />
                   {x.coldChain ? "Cold-chain enabled" : "Standard transport"}
+                </b>
+              </div>
+              <div>
+                <small>PAYMENT</small>
+                <b>
+                  <CheckCircle2 size={14} />
+                  {x.paymentStatus || "Not recorded"}
+                  {x.paymentId ? ` · ${x.paymentId}` : ""}
                 </b>
               </div>
             </div>
@@ -238,7 +339,7 @@ export default function Deliveries() {
               </div>
             )}
             <div className="tracking-actions">
-              {deliveryRole && (
+              {deliveryRole && x.status !== "Delivered" && x.status !== terminalStage && (
                 <label>
                   Update shipment status
                   <select
@@ -246,14 +347,14 @@ export default function Deliveries() {
                     onChange={(e) => changeStage(x, e.target.value)}
                   >
                     {stages
-                      .filter((s) => s !== "Received by inventory")
+                      .filter((s) => s !== terminalStage)
                       .map((s) => (
                         <option key={s}>{s}</option>
                       ))}
                   </select>
                 </label>
               )}
-              {inventoryRole && x.status === "Delivered" && (
+              {inventoryRole && !x.orderId && x.status === "Delivered" && (
                 <button
                   className="accept-btn"
                   onClick={() => changeStage(x, "Received by inventory")}
@@ -262,15 +363,32 @@ export default function Deliveries() {
                 </button>
               )}
               {inventoryRole &&
+                !x.orderId &&
                 x.status !== "Delivered" &&
-                x.status !== "Received by inventory" && (
+                x.status !== terminalStage && (
                   <span className="pending-note">
                     Waiting for the delivery partner to mark the parcel delivered.
                   </span>
                 )}
-              {x.status === "Received by inventory" && (
+              {buyerRole && x.orderId && x.status === "Delivered" && (
+                <button
+                  className="accept-btn"
+                  onClick={() => changeStage(x, "Received by buyer")}
+                >
+                  <PackageCheck size={15} /> Confirm order received
+                </button>
+              )}
+              {buyerRole &&
+                x.orderId &&
+                x.status !== "Delivered" &&
+                x.status !== terminalStage && (
+                  <span className="pending-note">
+                    Your order is being handled by the assigned delivery partner.
+                  </span>
+                )}
+              {x.status === terminalStage && (
                 <span className="received-confirmed">
-                  <CheckCircle2 size={15} /> Receipt confirmed by Inventory Manager
+                  <CheckCircle2 size={15} /> Receipt confirmed by {x.orderId ? "buyer" : "Inventory Manager"}
                 </span>
               )}
               {manager && (
@@ -281,13 +399,16 @@ export default function Deliveries() {
               )}
             </div>
           </article>
-        ))}
+          );
+        })}
         {!visible.length && (
           <div className="empty-state">
             <div>🚚</div>
             <h3>No deliveries to show</h3>
             <p>
-              {farmer
+              {buyerRole
+                ? "Paid marketplace orders will appear here after the Inventory Manager assigns a delivery partner."
+                : farmer
                 ? "Once payment is complete and a delivery partner is assigned, your shipment tracking will appear here."
                 : deliveryRole
                   ? "No shipments are assigned to your account yet."

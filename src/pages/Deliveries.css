@@ -1,6 +1,52 @@
 .tracking-card {
   min-width: 0;
 }
+.delivery-flow-label {
+  margin: -5px 0 12px;
+  color: #82999d;
+  font-size: 9px;
+}
+.delivery-flow-label b {
+  color: #58777b;
+}
+.delivery-type-tabs {
+  display: flex;
+  gap: 8px;
+  margin: 18px 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5eeee;
+}
+.delivery-type-tabs button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 1px solid #e1ebeb;
+  border-radius: 20px;
+  background: #fff;
+  color: #647f83;
+  font: 700 10px "DM Sans", sans-serif;
+  cursor: pointer;
+}
+.delivery-type-tabs button.active {
+  border-color: #b9e2da;
+  background: #eaf7f4;
+  color: #087f73;
+}
+.delivery-type-tabs button span {
+  display: grid;
+  min-width: 18px;
+  height: 18px;
+  place-items: center;
+  border-radius: 50%;
+  background: #eff4f4;
+  color: #688286;
+  font-size: 8px;
+}
+.delivery-type-tabs button.active span {
+  background: #d3eee7;
+  color: #087f73;
+}
 .tracking-route {
   display: flex;
   align-items: center;
