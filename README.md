@@ -15,9 +15,9 @@ Open the local URL printed by Vite (normally http://localhost:5173).
 
 1. Open **Login** or **Get Started** and choose a role. No password or backend is needed.
 2. Browse fish from the public marketplace, add items to the basket and register as a buyer at checkout.
-3. Checkout opens the buyer dashboard's **Payments** page. Complete the simulated payment to make the order eligible for dispatch.
-4. The **Inventory Manager** can review buyer payment status and assign a delivery partner. The **Administrator** can monitor payments and delivery progress.
-5. **Delivery Personnel** update shipment milestones. Buyers track shipments and confirm receipt after delivery; suppliers can also follow shipments for their fish.
+3. Checkout opens the buyer dashboard's **Payments** page. The buyer can record a simulated online payment or choose cash on delivery (COD).
+4. The **Inventory Manager** can review payment status and assign delivery for online-paid or COD orders. The **Administrator** can monitor payments and delivery progress.
+5. **Delivery Personnel** update shipment milestones and confirm COD cash collection at handoff. Buyers track shipments and confirm receipt; suppliers can also follow shipments for their fish.
 6. To use the supply-deal workflow, sign in as **Fish Farmer**, **Hatchery Farmer**, **Dam Farmer** or **River Contractor** to add fish listings, then use the Inventory Manager dashboard to negotiate and manage deals.
 
 ## Demo roles
@@ -64,8 +64,8 @@ src/
 ## Marketplace buyer order workflow
 
 1. A buyer places an order from the public marketplace. Checkout registers the buyer and opens the Payments dashboard.
-2. The buyer completes a simulated payment. The order and transaction appear in buyer, Admin and Inventory Manager dashboards.
+2. The buyer either completes a simulated online payment or selects COD. Online payments are recorded immediately; COD remains due until the delivery partner confirms collection.
 3. Inventory Manager assigns a delivery partner to the buyer's delivery address. The assigned shipment appears in the buyer, supplier, Inventory Manager, Admin and delivery-personnel tracking views.
-4. Delivery Personnel update the shipment through Delivered. The buyer confirms receipt, and the final status is reflected in the order and delivery history.
+4. Delivery Personnel update the shipment through Delivered and confirm COD cash collection when applicable. The buyer confirms receipt, and payment and delivery statuses are reflected in the order history.
 
 All workflow data is stored in browser localStorage for this demo. A production deployment should move users, listings, payments, delivery assignments and tracking events to authenticated backend APIs, and integrate a real payment gateway and carrier tracking service.

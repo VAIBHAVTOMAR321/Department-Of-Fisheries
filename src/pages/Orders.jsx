@@ -62,6 +62,11 @@ export default function Orders() {
                   <strong>{isBuyer ? order.deliveryLocation : order.buyerName}</strong>
                   {!isBuyer && <small>{order.buyerEmail} · {order.buyerPhone}</small>}
                   {isBuyer && <small><MapPin size={12} /> {order.deliveryLocation}</small>}
+                  {isBuyer && (
+                    <small>
+                      <WalletCards size={12} /> Payment: {order.paymentStatus || "Pending"} · {order.paymentMethod || "Not selected"}
+                    </small>
+                  )}
                 </div>
                 <div className="dashboard-order-lines">
                   {orderItems.map((item) => {
@@ -88,7 +93,7 @@ export default function Orders() {
                 </footer>
                 {isBuyer && (
                   <div className="dashboard-order-actions">
-                    {order.paymentStatus !== "Paid" && (
+                    {!["Paid", "COD pending"].includes(order.paymentStatus) && (
                       <button
                         className="primary-btn"
                         onClick={() => navigate("/app/payments")}

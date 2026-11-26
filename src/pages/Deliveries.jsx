@@ -11,12 +11,15 @@ import {
   Phone,
   Navigation,
   ClipboardList,
+  IndianRupee,
 } from "lucide-react";
 import {
   getDeliveries,
   saveDeliveries,
   getOrders,
   saveOrders,
+  getPayments,
+  savePayments,
 } from "../utils/store";
 import StatusBadge from "../components/StatusBadge/StatusBadge";
 import "./Operations.css";
@@ -105,6 +108,73 @@ export default function Deliveries() {
           : order,
       );
       saveOrders(orders);
+    }
+  };
+  const confirmCodReceived = (item) => {
+    if (
+      !deliveryRole ||
+      item.status !== "Delivered" ||
+      item.paymentStatus !== "COD pending"
+    ) {
+      return;
+    }
+    const paidAt = new Date().toISOString();
+    const paymentId = "TXN-" + Date.now().toString().slice(-8);
+    const event = {
+      status: "COD received",
+      at: paidAt,
+      by: user.name,
+      note: `Cash on delivery of ₹${Number(item.paymentAmount).toLocaleString("en-IN")} received by ${user.name}.`,
+    };
+    const nextDeliveries = items.map((delivery) =>
+      delivery.id === item.id
+        ? {
+            ...delivery,
+            paymentStatus: "Paid",
+            paymentId,
+            paymentReceivedAt: paidAt,
+            paymentReceivedBy: user.name,
+            updatedAt: paidAt,
+            history: [...(delivery.history || []), event],
+          }
+        : delivery,
+    );
+    update(nextDeliveries);
+    const nextOrders = getOrders().map((order) =>
+      order.id === item.orderId
+        ? {
+            ...order,
+            paymentStatus: "Paid",
+            paymentMethod: "Cash on delivery",
+            paymentId,
+            paidAt,
+            paymentReceivedAt: paidAt,
+            paymentReceivedBy: user.name,
+          }
+        : order,
+    );
+    saveOrders(nextOrders);
+    const payments = getPayments();
+    if (!payments.some((payment) => payment.orderId === item.orderId)) {
+      savePayments([
+        {
+          id: paymentId,
+          orderId: item.orderId,
+          species: item.fish,
+          supplier: item.supplier,
+          quantity: item.paymentQuantity,
+          amount: Number(item.paymentAmount),
+          method: "Cash on delivery",
+          reference: `COD-${item.id}`,
+          payer: item.buyerName,
+          buyerName: item.buyerName,
+          buyerEmail: item.buyerEmail,
+          paidAt,
+          receivedBy: user.name,
+          status: "Paid",
+        },
+        ...payments,
+      ]);
     }
   };
   return (
@@ -291,8 +361,12 @@ export default function Deliveries() {
                 <b>
                   <CheckCircle2 size={14} />
                   {x.paymentStatus || "Not recorded"}
+                  {x.paymentMethod ? ` · ${x.paymentMethod}` : ""}
                   {x.paymentId ? ` · ${x.paymentId}` : ""}
                 </b>
+                {x.paymentStatus === "COD pending" && (
+                  <small>₹{Number(x.paymentAmount).toLocaleString("en-IN")} due at delivery</small>
+                )}
               </div>
             </div>
             <div className="tracking-progress">
@@ -339,6 +413,19 @@ export default function Deliveries() {
               </div>
             )}
             <div className="tracking-actions">
+              {deliveryRole &&
+                x.orderId &&
+                x.paymentMethod === "Cash on delivery" &&
+                x.paymentStatus === "COD pending" &&
+                x.status === "Delivered" && (
+                  <button
+                    className="accept-btn"
+                    onClick={() => confirmCodReceived(x)}
+                  >
+                    <IndianRupee size={15} /> Confirm COD received · ₹
+                    {Number(x.paymentAmount).toLocaleString("en-IN")}
+                  </button>
+                )}
               {deliveryRole && x.status !== "Delivered" && x.status !== terminalStage && (
                 <label>
                   Update shipment status

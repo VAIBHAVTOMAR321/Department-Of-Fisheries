@@ -44,6 +44,7 @@ export default function Payments() {
   const [orders, setOrders] = useState(getOrders());
   const [selected, setSelected] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [paymentType, setPaymentType] = useState("online");
   const [method, setMethod] = useState("UPI");
   const [reference, setReference] = useState("");
   const [payer, setPayer] = useState(user.name || "Department Administrator");
@@ -81,6 +82,9 @@ export default function Payments() {
   );
   const marketPaid = marketOrders.filter(
     (order) => order.paymentStatus === "Paid",
+  );
+  const marketReadyForDelivery = marketOrders.filter((order) =>
+    ["Paid", "COD pending"].includes(order.paymentStatus),
   );
   const orderTotal = (order) =>
     order.items.reduce(
@@ -144,49 +148,59 @@ export default function Payments() {
   };
   const payBuyerOrder = (e) => {
     e.preventDefault();
-    if (!selectedOrder || selectedOrder.paymentStatus === "Paid") return;
+    if (
+      !selectedOrder ||
+      ["Paid", "COD pending"].includes(selectedOrder.paymentStatus)
+    ) {
+      return;
+    }
+    const isCod = paymentType === "cod";
     const amount = orderTotal(selectedOrder);
-    const rec = {
-      id: "TXN-" + Date.now().toString().slice(-8),
-      orderId: selectedOrder.id,
-      species: selectedOrder.items.map((item) => item.species).join(", "),
-      supplier: selectedOrder.items
-        .map((item) => item.supplier)
-        .filter((name, i, all) => all.indexOf(name) === i)
-        .join(", "),
-      quantity: selectedOrder.items.reduce(
-        (sum, item) => sum + Number(item.quantity),
-        0,
-      ),
-      amount,
-      method,
-      reference: reference.trim() || "DEMO-" + Date.now().toString().slice(-6),
-      payer,
-      buyerName: selectedOrder.buyerName,
-      buyerEmail: selectedOrder.buyerEmail,
-      paidAt: new Date().toISOString(),
-      status: "Paid",
-    };
+    const now = new Date().toISOString();
+    const rec = isCod
+      ? null
+      : {
+          id: "TXN-" + Date.now().toString().slice(-8),
+          orderId: selectedOrder.id,
+          species: selectedOrder.items.map((item) => item.species).join(", "),
+          supplier: selectedOrder.items
+            .map((item) => item.supplier)
+            .filter((name, i, all) => all.indexOf(name) === i)
+            .join(", "),
+          quantity: selectedOrder.items.reduce(
+            (sum, item) => sum + Number(item.quantity),
+            0,
+          ),
+          amount,
+          method,
+          reference: reference.trim() || "DEMO-" + Date.now().toString().slice(-6),
+          payer,
+          buyerName: selectedOrder.buyerName,
+          buyerEmail: selectedOrder.buyerEmail,
+          paidAt: now,
+          status: "Paid",
+        };
     const nextOrders = orders.map((order) =>
       order.id === selectedOrder.id
         ? {
             ...order,
-            status: "Paid",
-            paymentStatus: "Paid",
-            paymentId: rec.id,
-            paymentMethod: method,
-            paidAt: rec.paidAt,
+            status: isCod ? "COD pending" : "Paid",
+            paymentStatus: isCod ? "COD pending" : "Paid",
+            paymentMethod: isCod ? "Cash on delivery" : method,
+            ...(rec ? { paymentId: rec.id, paidAt: rec.paidAt } : {}),
           }
         : order,
     );
-    const nextPayments = [rec, ...payments];
     setOrders(nextOrders);
     saveOrders(nextOrders);
-    setPayments(nextPayments);
-    savePayments(nextPayments);
+    if (rec) {
+      const nextPayments = [rec, ...payments];
+      setPayments(nextPayments);
+      savePayments(nextPayments);
+    }
     setSelectedOrder(null);
     setReference("");
-    setReceipt(rec);
+    if (rec) setReceipt(rec);
   };
   const openAssign = (x) => {
     setAssign(x);
@@ -233,6 +247,12 @@ export default function Payments() {
         orderId: assignOrder.id,
         paymentStatus: assignOrder.paymentStatus,
         paymentId: assignOrder.paymentId,
+        paymentMethod: assignOrder.paymentMethod,
+        paymentAmount: orderTotal(assignOrder),
+        paymentQuantity: assignOrder.items.reduce(
+          (sum, item) => sum + Number(item.quantity),
+          0,
+        ),
         buyerName: assignOrder.buyerName,
         buyerEmail: assignOrder.buyerEmail,
         buyerPhone: assignOrder.buyerPhone,
@@ -278,6 +298,7 @@ export default function Payments() {
       listingId: assign.id,
       paymentStatus: assign.paymentStatus || "Paid",
       paymentId: assign.paymentId,
+      paymentMethod: assign.paymentMethod,
       fish: `${assign.species} · ${assign.qty} kg`,
       supplier: assign.supplier,
       supplierLocation: assign.location,
@@ -361,8 +382,8 @@ export default function Payments() {
             <b>Order settlement workflow</b>
             <span>
               {user.role === "buyer"
-                ? "Place order → Buyer payment → Delivery assignment → Tracking → Receipt confirmation"
-                : "Buyer payment → Inventory assignment → Delivery tracking → Buyer receipt"}
+                ? "Place order → Online payment or COD → Delivery assignment → Tracking → Receipt confirmation"
+                : "Buyer online payment or COD selection → Inventory assignment → Delivery tracking → COD collection / buyer receipt"}
             </span>
           </div>
         </div>
@@ -371,7 +392,7 @@ export default function Payments() {
           <i />
           <span className={pending.length + marketPending.length ? "active" : "done"}>2. Payment</span>
           <i />
-          <span className={paid.some((deal) => !deliveries.some((delivery) => delivery.listingId === deal.id)) || marketPaid.some((order) => !deliveries.some((delivery) => delivery.orderId === order.id)) ? "active" : "muted"}>
+          <span className={paid.some((deal) => !deliveries.some((delivery) => delivery.listingId === deal.id)) || marketReadyForDelivery.some((order) => !deliveries.some((delivery) => delivery.orderId === order.id)) ? "active" : "muted"}>
             3. Delivery assignment
           </span>
         </div>
@@ -383,11 +404,11 @@ export default function Payments() {
               <h2>{user.role === "buyer" ? "Your marketplace orders" : "Marketplace buyer orders"}</h2>
               <p>
                 {user.role === "buyer"
-                  ? "Review payment status and complete payment for your orders."
-                  : "Monitor buyer payments and assign delivery partners for paid orders."}
+                  ? "Choose online payment or cash on delivery, then track collection and shipment status."
+                  : "Monitor online and COD payment status, then assign delivery partners for eligible orders."}
               </p>
             </div>
-            <span>{marketPending.length} payment pending</span>
+            <span>{marketPending.length} unpaid / COD due</span>
           </div>
           {marketOrders.length ? (
             <div className="pay-deal-list">
@@ -404,7 +425,15 @@ export default function Payments() {
                           {order.items.map((item) => `${item.species} · ${item.quantity} kg`).join(", ")}
                         </p>
                       </div>
-                      <StatusBadge status={order.paymentStatus === "Paid" ? order.status : "Payment pending"} />
+                      <StatusBadge
+                        status={
+                          order.paymentStatus === "Pending" || !order.paymentStatus
+                            ? "Payment pending"
+                            : order.paymentStatus === "Paid"
+                              ? order.status
+                              : order.paymentStatus
+                        }
+                      />
                     </div>
                     <div className="pay-breakdown">
                       <div>
@@ -416,7 +445,13 @@ export default function Payments() {
                         <b>{order.paymentStatus || "Pending"}</b>
                       </div>
                       <div className="pay-total">
-                        <small>{order.paymentStatus === "Paid" ? "PAID AMOUNT" : "TOTAL TO PAY"}</small>
+                        <small>
+                          {order.paymentStatus === "Paid"
+                            ? "PAID AMOUNT"
+                            : order.paymentStatus === "COD pending"
+                              ? "COD DUE ON DELIVERY"
+                              : "TOTAL TO PAY"}
+                        </small>
                         <b>₹{total.toLocaleString("en-IN")}</b>
                       </div>
                     </div>
@@ -430,20 +465,27 @@ export default function Payments() {
                         <LockKeyhole size={13} />{" "}
                         {order.paymentStatus === "Paid"
                           ? `Paid via ${order.paymentMethod || "Digital payment"}`
-                          : "Payment is required before delivery can be assigned"}
+                          : order.paymentStatus === "COD pending"
+                                ? "Cash will be collected by the delivery partner at handoff."
+                                : "Complete online payment or choose COD to enable delivery assignment."}
                       </span>
-                      {user.role === "buyer" && order.paymentStatus !== "Paid" && (
+                      {user.role === "buyer" &&
+                        !["Paid", "COD pending"].includes(order.paymentStatus) && (
                         <button
                           className="primary-btn"
                           onClick={() => {
                             setSelectedOrder(order);
+                            setPaymentType("online");
                             setPayer(user.name);
+                            setReference("");
                           }}
                         >
-                          <IndianRupee size={15} /> Pay ₹{total.toLocaleString("en-IN")}
+                          <IndianRupee size={15} /> Payment options
                         </button>
                       )}
-                      {inventory && order.paymentStatus === "Paid" && !shipment && (
+                      {inventory &&
+                        ["Paid", "COD pending"].includes(order.paymentStatus) &&
+                        !shipment && (
                         <button className="primary-btn" onClick={() => openOrderAssign(order)}>
                           <Truck size={15} /> Assign delivery
                         </button>
@@ -641,7 +683,7 @@ export default function Payments() {
       </div>
       {selectedOrder && (
         <Modal
-          title="Complete marketplace order payment"
+          title="Choose marketplace order payment"
           onClose={() => setSelectedOrder(null)}
         >
           <div className="checkout-summary">
@@ -650,39 +692,64 @@ export default function Payments() {
               <b>₹{orderTotal(selectedOrder).toLocaleString("en-IN")}</b>
             </div>
             <p>
-              This demo payment covers the order being delivered to{" "}
-              {selectedOrder.deliveryLocation}.
+              Order delivery address: {selectedOrder.deliveryLocation}.
             </p>
           </div>
           <form className="form-grid payment-form" onSubmit={payBuyerOrder}>
             <label className="full-field">
-              Payer name
-              <input required value={payer} onChange={(e) => setPayer(e.target.value)} />
-            </label>
-            <label className="full-field">
-              Payment method
-              <select value={method} onChange={(e) => setMethod(e.target.value)}>
-                <option>UPI</option>
-                <option>Bank transfer</option>
-                <option>Debit / Credit card</option>
-                <option>Net banking</option>
+              Payment option
+              <select
+                value={paymentType}
+                onChange={(e) => setPaymentType(e.target.value)}
+              >
+                <option value="online">Pay online (demo)</option>
+                <option value="cod">Cash on delivery (COD)</option>
               </select>
             </label>
-            <label className="full-field">
-              Demo transaction reference (optional)
-              <input
-                value={reference}
-                onChange={(e) => setReference(e.target.value)}
-                placeholder="Enter UTR / payment reference"
-              />
-            </label>
-            <div className="demo-payment-warning full-field">
-              <ShieldCheck size={16} /> Demo mode only: no money is transferred;
-              submitting records a simulated successful payment.
-            </div>
+            {paymentType === "online" ? (
+              <>
+                <label className="full-field">
+                  Payer name
+                  <input required value={payer} onChange={(e) => setPayer(e.target.value)} />
+                </label>
+                <label className="full-field">
+                  Online payment method
+                  <select value={method} onChange={(e) => setMethod(e.target.value)}>
+                    <option>UPI</option>
+                    <option>Bank transfer</option>
+                    <option>Debit / Credit card</option>
+                    <option>Net banking</option>
+                  </select>
+                </label>
+                <label className="full-field">
+                  Demo transaction reference (optional)
+                  <input
+                    value={reference}
+                    onChange={(e) => setReference(e.target.value)}
+                    placeholder="Enter UTR / payment reference"
+                  />
+                </label>
+                <div className="demo-payment-warning full-field">
+                  <ShieldCheck size={16} /> Demo mode only: no money is transferred;
+                  submitting records a simulated successful payment.
+                </div>
+              </>
+            ) : (
+              <div className="demo-payment-warning full-field">
+                <Truck size={16} /> Pay ₹{orderTotal(selectedOrder).toLocaleString("en-IN")} in cash to the delivery partner at handoff.
+              </div>
+            )}
             <button className="primary-btn full-field">
-              <LockKeyhole size={15} /> Confirm demo payment · ₹
-              {orderTotal(selectedOrder).toLocaleString("en-IN")}
+              {paymentType === "online" ? (
+                <>
+                  <LockKeyhole size={15} /> Confirm online payment · ₹
+                  {orderTotal(selectedOrder).toLocaleString("en-IN")}
+                </>
+              ) : (
+                <>
+                  <Truck size={15} /> Confirm cash on delivery
+                </>
+              )}
             </button>
           </form>
         </Modal>
@@ -770,11 +837,20 @@ export default function Payments() {
                   ? `${assignOrder.id} · ${assignOrder.items.length} fish item(s)`
                   : `${assign.species} · ${assign.qty} kg`}
               </span>
-              <b>Paid</b>
+              <b>
+                {assignOrder?.paymentStatus === "COD pending"
+                  ? "COD pending"
+                  : "Paid"}
+              </b>
             </div>
             <p>
-              Payment is complete. Assign a delivery partner to transport the
-              purchase to {assignOrder ? "the buyer's delivery address" : "the inventory receiving location"}.
+              {assignOrder?.paymentStatus === "COD pending"
+                ? "The buyer selected cash on delivery. The delivery partner will collect and confirm cash at handoff."
+                : "Payment is complete."}{" "}
+              Assign a delivery partner to transport the purchase to{" "}
+              {assignOrder
+                ? "the buyer's delivery address"
+                : "the inventory receiving location"}.
             </p>
           </div>
           <form className="form-grid" onSubmit={assignPartner}>
@@ -893,6 +969,7 @@ export default function Payments() {
               ["Agreed rate", receipt.pricePerKg ? "₹" + receipt.pricePerKg + "/kg" : "Included in order total"],
               ["Payment method", receipt.method],
               ["Reference", receipt.reference],
+              ...(receipt.receivedBy ? [["COD collected by", receipt.receivedBy]] : []),
               ["Paid by", receipt.payer],
               ["Date", new Date(receipt.paidAt).toLocaleString("en-IN")],
             ].map(([a, b]) => (

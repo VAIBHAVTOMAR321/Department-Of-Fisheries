@@ -15,6 +15,7 @@ export default function StatusBadge({ status }) {
           s.toLowerCase().includes("near") ||
           s === "Negotiation" ||
           s === "Payment pending" ||
+          s === "COD pending" ||
           s === "Out for delivery"
         ? "amber"
         : s.toLowerCase().includes("expired") ||
