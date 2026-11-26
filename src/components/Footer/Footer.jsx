@@ -34,15 +34,15 @@ export default function Footer() {
         </div>
         <div>
           <h4>Location</h4>
-          <a
+          <Link
             className="footer-address"
-            href={departmentMapUrl}
+            to={departmentMapUrl}
             target="_blank"
             rel="noreferrer"
           >
             <MapPin size={14} />
             <span>{departmentAddress}</span>
-          </a>
+          </Link>
         </div>
       </div>
       <div className="footer-bottom">

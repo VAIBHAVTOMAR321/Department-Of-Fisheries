@@ -288,7 +288,7 @@ export default function Listings() {
                       <button
                         className="accept-btn"
                         onClick={() =>
-                          window.location.assign("/app/negotiations")
+                          window.location.assign("/fisheriesdemo/app/negotiations")
                         }
                       >
                         <Check size={14} /> Final confirmation
@@ -297,7 +297,7 @@ export default function Listings() {
                     {["Payment pending", "Paid"].includes(x.status) && (
                       <button
                         className="outline-btn"
-                        onClick={() => window.location.assign("/app/payments")}
+                        onClick={() => window.location.assign("/fisheriesdemo/app/payments")}
                       >
                         <IndianRupee size={14} />{" "}
                         {x.status === "Paid" ? "View payment" : "Pay now"}
