@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Mail, MessageSquareText, Phone } from "lucide-react";
 import { getContactRequests } from "../utils/store.js";
 import "./ContactRequests.css";
+import { Link } from "react-router-dom";
 
 function ContactRequests() {
   const [requests] = useState(getContactRequests);
@@ -31,8 +32,8 @@ function ContactRequests() {
                 </time>
               </header>
               <div className="contact-request-details">
-                <a href={`mailto:${request.email}`}><Mail size={14} /> {request.email}</a>
-                <a href={`tel:${request.phone}`}><Phone size={14} /> {request.phone}</a>
+                <Link to={`mailto:${request.email}`}><Mail size={14} /> {request.email}</Link>
+                <Link to={`tel:${request.phone}`}><Phone size={14} /> {request.phone}</Link>
               </div>
               <p><MessageSquareText size={15} /> {request.message}</p>
             </article>

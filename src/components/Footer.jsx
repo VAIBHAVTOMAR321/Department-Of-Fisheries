@@ -10,9 +10,9 @@ function Footer() {
             <BrandMark light />
             <p>Supporting sustainable freshwater fisheries and fish-farming livelihoods across Uttarakhand.</p>
             <div className="footer-socials" aria-label="Social media">
-              <a href="https://instagram.com" aria-label="Instagram"><i className="bi bi-instagram" /></a>
-              <a href="https://facebook.com" aria-label="Facebook"><i className="bi bi-facebook" /></a>
-              <a href="https://wa.me/918001234567" aria-label="WhatsApp"><i className="bi bi-whatsapp" /></a>
+              <Link to="https://instagram.com" aria-label="Instagram"><i className="bi bi-instagram" /></Link>
+              <Link to="https://facebook.com" aria-label="Facebook"><i className="bi bi-facebook" /></Link>
+              <Link to="https://wa.me/918001234567" aria-label="WhatsApp"><i className="bi bi-whatsapp" /></Link>
             </div>
           </div>
           <div className="footer-links">
@@ -38,7 +38,7 @@ function Footer() {
           <span>© 2026 Department of Fisheries, Uttarakhand</span>
           <div><Link to="/contact">Contact</Link><Link to="/about">Department services</Link></div>
           <span>Sustainable freshwater fisheries</span>
-          <span>Designed by <a href="https://brainrock.in" target="_blank" rel="noopener noreferrer">Brainrock</a></span>
+          <span>Designed by <Link to="https://brainrock.in" target="_blank" rel="noopener noreferrer">Brainrock</Link></span>
         </div>
       </div>
     </footer>

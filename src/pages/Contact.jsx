@@ -5,6 +5,7 @@ import {
   departmentMapEmbedUrl,
   departmentMapUrl,
 } from "../data/departmentContact.js";
+import { Link } from "react-router-dom";
 
 const CONTACT_EMAIL = "info.fisheriesuk@gmail.com";
 const CONTACT_PHONE = "+91 98765 43XXXX";
@@ -43,7 +44,7 @@ function Contact() {
               <i className="bi bi-envelope" />
               <span>
                 <strong>Email us</strong>
-                <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+                <Link to={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</Link>
               </span>
             </div>
             <div className="contact-method">
@@ -57,12 +58,12 @@ function Contact() {
               <i className="bi bi-geo-alt" />
               <span>
                 <strong>Department address</strong>
-                <a href={departmentMapUrl} target="_blank" rel="noreferrer">
+                <Link to={departmentMapUrl} target="_blank" rel="noreferrer">
                   {departmentAddress}
-                </a>
-                <a href={departmentMapUrl} target="_blank" rel="noreferrer">
+                </Link>
+                <Link to={departmentMapUrl} target="_blank" rel="noreferrer">
                   View on Google Maps
-                </a>
+                </Link>
               </span>
             </div>
             <div className="contact-method">
@@ -153,9 +154,9 @@ function Contact() {
             <span className="eyebrow">FIND THE DEPARTMENT</span>
             <h2>Visit us in Dehradun</h2>
             <p>{departmentAddress}</p>
-            <a href={departmentMapUrl} target="_blank" rel="noreferrer">
+            <Link to={departmentMapUrl} target="_blank" rel="noreferrer">
               Open in Google Maps <i className="bi bi-arrow-up-right" />
-            </a>
+            </Link>
           </div>
           <iframe
             title="Department of Fisheries location in Google Maps"

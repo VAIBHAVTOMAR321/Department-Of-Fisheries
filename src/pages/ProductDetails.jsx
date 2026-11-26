@@ -23,7 +23,7 @@ function ProductDetails() {
         <div className="col-lg-6"><div className="detail-image-wrap"><img src={product.image} alt={product.name} /><span className="product-badge badge-fresh">{product.badge}</span></div></div>
         <div className="col-lg-6 detail-copy">
           <span className="eyebrow">{product.species}</span><h1>{product.name}</h1>
-          <div className="detail-rating"><span>★★★★★</span> {product.rating} <a href="#reviews">({product.reviews} reviews)</a></div>
+          <div className="detail-rating"><span>★★★★★</span> {product.rating} <Link to="#reviews">({product.reviews} reviews)</Link></div>
           <div className="detail-price">{formatPrice(product.price)} <del>{product.compareAt && formatPrice(product.compareAt)}</del></div>
           <div className="detail-availability"><i className="bi bi-check-circle-fill" /> Thoughtfully sourced · Availability by enquiry</div>
           <p className="detail-description">{product.description}</p>
