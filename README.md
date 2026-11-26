@@ -56,9 +56,9 @@ src/
 3. Fish Farmer accepts the offer or sends a counteroffer.
 4. After farmer acceptance, the order status becomes `Farmer accepted`.
 5. Only Admin / Inventory Manager can perform `Final confirm order` from Negotiations. This locks the agreed price and moves the deal to `Payment pending`.
-6. Inventory Manager records payment in Payments. This project currently simulates payment in localStorage; it does not transfer real money.
-7. After payment, Inventory Manager uses `Assign delivery partner` on the paid deal. Partner name, phone, email, destination, pickup time, estimated arrival and cold-chain requirement are recorded.
-8. Farmer can view the delivery partner and ETA in Deliveries. Delivery Personnel can update shipment milestones: Assigned, Picked up, In transit, Out for delivery and Delivered.
+6. Inventory Manager chooses an online demo method or Cash on delivery (COD) in Payments. Online demo payments immediately mark the deal Paid. COD remains `COD pending` until Delivery Personnel confirm cash was paid to the supplier at pickup.
+7. Inventory Manager can assign delivery for an online-paid or COD-pending deal. Partner name, phone, email, destination, pickup time, estimated arrival and cold-chain requirement are recorded.
+8. Farmer can view the delivery partner and ETA in Deliveries. Delivery Personnel update shipment milestones and confirm supplier COD at `Picked up`; confirmation marks the deal Paid and records the settlement.
 9. Inventory Manager confirms receipt of the purchased fish. Admin and Inventory Manager can view the complete tracking history in Deliveries.
 
 ## Marketplace buyer order workflow

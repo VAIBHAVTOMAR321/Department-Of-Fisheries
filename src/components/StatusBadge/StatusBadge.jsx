@@ -7,6 +7,7 @@ export default function StatusBadge({ status }) {
     s === "Delivered" ||
     s === "Received by inventory" ||
     s === "Received by buyer" ||
+    s === "COD received" ||
     s === "Farmer accepted" ||
     s === "In transit" ||
     s === "Picked up"

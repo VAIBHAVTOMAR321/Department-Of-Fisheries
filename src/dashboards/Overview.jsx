@@ -91,7 +91,7 @@ export default function Overview() {
         {(isBuyer
           ? [
               ["My orders", buyerOrders.length, ClipboardList, "teal", "Marketplace orders"],
-              ["Payment due", buyerOrders.filter((order) => order.paymentStatus !== "Paid").length, WalletCards, "orange", "Awaiting payment"],
+              ["Payment due", buyerOrders.filter((order) => !["Paid", "COD received"].includes(order.paymentStatus)).length, WalletCards, "orange", "Awaiting payment"],
               ["In delivery", buyerDeliveries.filter((delivery) => !["Received by buyer"].includes(delivery.status)).length, Truck, "blue", "Track your packages"],
               ["Delivered", buyerDeliveries.filter((delivery) => delivery.status === "Received by buyer").length, CheckCircle2, "purple", "Receipt confirmed"],
             ]

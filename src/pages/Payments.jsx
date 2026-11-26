@@ -64,13 +64,15 @@ export default function Payments() {
   const managerView = ["admin", "inventory"].includes(user.role);
   const visible = listings.filter((x) =>
     managerView
-      ? ["Payment pending", "Paid"].includes(x.status)
+      ? ["Payment pending", "COD pending", "Paid"].includes(x.status)
       : supplierRoles.includes(user.role)
         ? x.supplier === user.name &&
-          ["Payment pending", "Paid"].includes(x.status)
+          ["Payment pending", "COD pending", "Paid"].includes(x.status)
         : false,
   );
-  const pending = visible.filter((x) => x.status === "Payment pending");
+  const pending = visible.filter((x) =>
+    ["Payment pending", "COD pending"].includes(x.status),
+  );
   const paid = visible.filter((x) => x.status === "Paid");
   const marketOrders = orders.filter((order) =>
     managerView
@@ -78,10 +80,10 @@ export default function Payments() {
       : user.role === "buyer" && order.buyerEmail === user.email,
   );
   const marketPending = marketOrders.filter(
-    (order) => order.paymentStatus !== "Paid",
+    (order) => !["Paid", "COD received"].includes(order.paymentStatus),
   );
   const marketPaid = marketOrders.filter(
-    (order) => order.paymentStatus === "Paid",
+    (order) => ["Paid", "COD received"].includes(order.paymentStatus),
   );
   const marketReadyForDelivery = marketOrders.filter((order) =>
     ["Paid", "COD pending"].includes(order.paymentStatus),
@@ -111,46 +113,53 @@ export default function Payments() {
     e.preventDefault();
     if (!selected) return;
     const rate = +(selected.agreedPrice || selected.offer || selected.ask);
-    const rec = {
-      id: "TXN-" + Date.now().toString().slice(-8),
-      listingId: selected.id,
-      species: selected.species,
-      supplier: selected.supplier,
-      quantity: selected.qty,
-      pricePerKg: rate,
-      amount: rate * selected.qty,
-      method,
-      reference: reference.trim() || "DEMO-" + Date.now().toString().slice(-6),
-      payer,
-      paidAt: new Date().toISOString(),
-      status: "Paid",
-    };
+    const cod = method === "Cash on delivery";
+    const rec = cod
+      ? null
+      : {
+          id: "TXN-" + Date.now().toString().slice(-8),
+          listingId: selected.id,
+          species: selected.species,
+          supplier: selected.supplier,
+          quantity: selected.qty,
+          pricePerKg: rate,
+          amount: rate * selected.qty,
+          method,
+          reference: reference.trim() || "DEMO-" + Date.now().toString().slice(-6),
+          payer,
+          paidAt: new Date().toISOString(),
+          status: "Paid",
+        };
     updateListings(
       listings.map((x) =>
         x.id === selected.id
           ? {
               ...x,
-              status: "Paid",
-              paymentStatus: "Paid",
-              paymentId: rec.id,
-              paidAt: rec.paidAt,
+              status: cod ? "COD pending" : "Paid",
+              paymentStatus: cod ? "COD pending" : "Paid",
+              ...(rec ? { paymentId: rec.id, paidAt: rec.paidAt } : {}),
               paymentMethod: method,
+              paymentPayer: payer,
             }
           : x,
       ),
     );
-    const next = [rec, ...payments];
-    setPayments(next);
-    savePayments(next);
+    if (rec) {
+      const next = [rec, ...payments];
+      setPayments(next);
+      savePayments(next);
+    }
     setSelected(null);
     setReference("");
-    setReceipt(rec);
+    if (rec) setReceipt(rec);
   };
   const payBuyerOrder = (e) => {
     e.preventDefault();
     if (
       !selectedOrder ||
-      ["Paid", "COD pending"].includes(selectedOrder.paymentStatus)
+      ["Paid", "COD pending", "COD received"].includes(
+        selectedOrder.paymentStatus,
+      )
     ) {
       return;
     }
@@ -299,6 +308,14 @@ export default function Payments() {
       paymentStatus: assign.paymentStatus || "Paid",
       paymentId: assign.paymentId,
       paymentMethod: assign.paymentMethod,
+      paymentAmount:
+        Number(assign.agreedPrice || assign.offer || assign.ask) *
+        Number(assign.qty),
+      paymentQuantity: Number(assign.qty),
+      paymentPricePerKg: Number(
+        assign.agreedPrice || assign.offer || assign.ask,
+      ),
+      paymentPayer: assign.paymentPayer || user.name,
       fish: `${assign.species} · ${assign.qty} kg`,
       supplier: assign.supplier,
       supplierLocation: assign.location,
@@ -351,7 +368,7 @@ export default function Payments() {
           <div>
             <small>PAYMENT PENDING</small>
             <b>₹{pendingTotal.toLocaleString("en-IN")}</b>
-            <em>{pending.length + marketPending.length} item(s) awaiting payment</em>
+            <em>{pending.length + marketPending.length} item(s) awaiting payment / cash handoff</em>
           </div>
         </article>
         <article>
@@ -429,7 +446,9 @@ export default function Payments() {
                         status={
                           order.paymentStatus === "Pending" || !order.paymentStatus
                             ? "Payment pending"
-                            : order.paymentStatus === "Paid"
+                            : order.paymentStatus === "COD received"
+                              ? "COD received"
+                              : order.paymentStatus === "Paid"
                               ? order.status
                               : order.paymentStatus
                         }
@@ -446,7 +465,7 @@ export default function Payments() {
                       </div>
                       <div className="pay-total">
                         <small>
-                          {order.paymentStatus === "Paid"
+                          {["Paid", "COD received"].includes(order.paymentStatus)
                             ? "PAID AMOUNT"
                             : order.paymentStatus === "COD pending"
                               ? "COD DUE ON DELIVERY"
@@ -458,19 +477,29 @@ export default function Payments() {
                     {managerView && (
                       <p className="market-order-meta">
                         Deliver to: {order.deliveryLocation} · {order.buyerEmail} · {order.buyerPhone}
+                        {order.paymentStatus === "COD received" && (
+                          <>
+                            {" "}· COD received by {order.paymentReceivedBy || "delivery partner"}
+                            {order.paymentReceivedAt
+                              ? ` at ${new Date(order.paymentReceivedAt).toLocaleString("en-IN")}`
+                              : ""}
+                          </>
+                        )}
                       </p>
                     )}
                     <div className="pay-deal-footer">
                       <span>
                         <LockKeyhole size={13} />{" "}
-                        {order.paymentStatus === "Paid"
+                        {order.paymentStatus === "COD received"
+                          ? `COD received by ${order.paymentReceivedBy || "delivery partner"}`
+                          : order.paymentStatus === "Paid"
                           ? `Paid via ${order.paymentMethod || "Digital payment"}`
                           : order.paymentStatus === "COD pending"
                                 ? "Cash will be collected by the delivery partner at handoff."
                                 : "Complete online payment or choose COD to enable delivery assignment."}
                       </span>
                       {user.role === "buyer" &&
-                        !["Paid", "COD pending"].includes(order.paymentStatus) && (
+                        !["Paid", "COD pending", "COD received"].includes(order.paymentStatus) && (
                         <button
                           className="primary-btn"
                           onClick={() => {
@@ -566,7 +595,11 @@ export default function Payments() {
                 </div>
                 <div className="pay-total">
                   <small>
-                    {x.status === "Paid" ? "PAID AMOUNT" : "TOTAL TO PAY"}
+                    {x.status === "Paid"
+                      ? "PAID AMOUNT"
+                      : x.status === "COD pending"
+                        ? "CASH DUE TO SUPPLIER AT PICKUP"
+                        : "TOTAL TO PAY"}
                   </small>
                   <b>₹{amount.toLocaleString("en-IN")}</b>
                 </div>
@@ -574,25 +607,35 @@ export default function Payments() {
               <div className="pay-deal-footer">
                 <span>
                   <LockKeyhole size={13} />{" "}
-                  {x.status === "Paid"
+                  {x.paymentStatus === "COD received"
+                    ? `COD received by ${x.paymentReceivedBy || "delivery partner"}${x.paymentReceivedAt ? ` at ${new Date(x.paymentReceivedAt).toLocaleString("en-IN")}` : ""}`
+                    : x.status === "Paid"
                     ? `Paid via ${x.paymentMethod || "Digital payment"}`
-                    : "Price locked after Inventory Manager final confirmation"}
+                    : x.status === "COD pending"
+                      ? "Delivery partner must confirm cash paid to the supplier at pickup."
+                      : "Price locked after Inventory Manager final confirmation"}
                 </span>
                 {x.status === "Payment pending" && inventory && (
                   <button
                     className="primary-btn"
-                    onClick={() => setSelected(x)}
+                    onClick={() => {
+                      setSelected(x);
+                      setMethod("UPI");
+                      setPayer(user.name);
+                      setReference("");
+                    }}
                   >
-                    <IndianRupee size={15} /> Pay ₹
-                    {amount.toLocaleString("en-IN")}
+                    <IndianRupee size={15} /> Choose payment method
                   </button>
                 )}
-                {x.status === "Paid" && inventory && !hasDelivery && (
+                {["Paid", "COD pending"].includes(x.status) &&
+                  inventory &&
+                  !hasDelivery && (
                   <button className="primary-btn" onClick={() => openAssign(x)}>
                     <Truck size={15} /> Assign delivery partner
                   </button>
                 )}
-                {x.status === "Paid" && hasDelivery && (
+                {["Paid", "COD pending"].includes(x.status) && hasDelivery && (
                   <button
                     className="outline-btn"
                     onClick={() => navigate("/app/deliveries")}
@@ -756,7 +799,7 @@ export default function Payments() {
       )}
       {selected && (
         <Modal
-          title="Complete supplier payment"
+          title={method === "Cash on delivery" ? "Record supplier COD" : "Complete supplier payment"}
           onClose={() => setSelected(null)}
         >
           <div className="checkout-summary">
@@ -797,27 +840,50 @@ export default function Payments() {
                 <option>Bank transfer</option>
                 <option>Debit / Credit card</option>
                 <option>Net banking</option>
+                <option>Cash on delivery</option>
               </select>
             </label>
-            <label className="full-field">
-              Demo transaction reference (optional)
-              <input
-                value={reference}
-                onChange={(e) => setReference(e.target.value)}
-                placeholder="Enter UTR / payment reference"
-              />
-            </label>
-            <div className="demo-payment-warning full-field">
-              <ShieldCheck size={16} /> Demonstration mode: no real money is
-              transferred. Submitting records a simulated successful payment in
-              this browser.
-            </div>
+            {method === "Cash on delivery" ? (
+              <div className="demo-payment-warning full-field">
+                <Truck size={16} /> Cash is due to the supplier when the delivery
+                partner picks up the fish. The partner must confirm the cash
+                handover in Deliveries before this deal is marked Paid.
+              </div>
+            ) : (
+              <>
+                <label className="full-field">
+                  Demo transaction reference (optional)
+                  <input
+                    value={reference}
+                    onChange={(e) => setReference(e.target.value)}
+                    placeholder="Enter UTR / payment reference"
+                  />
+                </label>
+                <div className="demo-payment-warning full-field">
+                  <ShieldCheck size={16} /> Demonstration mode: no real money is
+                  transferred. Submitting records a simulated successful payment in
+                  this browser.
+                </div>
+              </>
+            )}
             <button className="primary-btn full-field">
-              <LockKeyhole size={15} /> Confirm demo payment · ₹
-              {(
-                +(selected.agreedPrice || selected.offer || selected.ask) *
-                selected.qty
-              ).toLocaleString("en-IN")}
+              {method === "Cash on delivery" ? (
+                <>
+                  <Truck size={15} /> Record COD due · ₹
+                  {(
+                    +(selected.agreedPrice || selected.offer || selected.ask) *
+                    selected.qty
+                  ).toLocaleString("en-IN")}
+                </>
+              ) : (
+                <>
+                  <LockKeyhole size={15} /> Confirm demo payment · ₹
+                  {(
+                    +(selected.agreedPrice || selected.offer || selected.ask) *
+                    selected.qty
+                  ).toLocaleString("en-IN")}
+                </>
+              )}
             </button>
           </form>
         </Modal>

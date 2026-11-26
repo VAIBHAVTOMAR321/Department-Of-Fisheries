@@ -93,7 +93,7 @@ export default function Orders() {
                 </footer>
                 {isBuyer && (
                   <div className="dashboard-order-actions">
-                    {!["Paid", "COD pending"].includes(order.paymentStatus) && (
+                    {!["Paid", "COD pending", "COD received"].includes(order.paymentStatus) && (
                       <button
                         className="primary-btn"
                         onClick={() => navigate("/app/payments")}

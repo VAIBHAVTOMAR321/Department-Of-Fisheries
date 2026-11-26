@@ -20,6 +20,8 @@ import {
   saveOrders,
   getPayments,
   savePayments,
+  getListings,
+  saveListings,
 } from "../utils/store";
 import StatusBadge from "../components/StatusBadge/StatusBadge";
 import "./Operations.css";
@@ -70,6 +72,10 @@ export default function Deliveries() {
     saveDeliveries(next);
   };
   const changeStage = (item, nextStage) => {
+    if (nextStage === "COD received") {
+      confirmCodReceived(item);
+      return;
+    }
     const recipientStage = item.orderId
       ? "Received by buyer"
       : "Received by inventory";
@@ -113,7 +119,9 @@ export default function Deliveries() {
   const confirmCodReceived = (item) => {
     if (
       !deliveryRole ||
+      !item.orderId ||
       item.status !== "Delivered" ||
+      item.paymentMethod !== "Cash on delivery" ||
       item.paymentStatus !== "COD pending"
     ) {
       return;
@@ -124,16 +132,17 @@ export default function Deliveries() {
       status: "COD received",
       at: paidAt,
       by: user.name,
-      note: `Cash on delivery of ₹${Number(item.paymentAmount).toLocaleString("en-IN")} received by ${user.name}.`,
+      note: `Cash on delivery of ₹${Number(item.paymentAmount).toLocaleString("en-IN")} collected from ${item.buyerName} by ${user.name} at delivery.`,
     };
     const nextDeliveries = items.map((delivery) =>
       delivery.id === item.id
         ? {
             ...delivery,
-            paymentStatus: "Paid",
+            paymentStatus: "COD received",
             paymentId,
             paymentReceivedAt: paidAt,
             paymentReceivedBy: user.name,
+            paymentReceiptStatus: "COD received",
             updatedAt: paidAt,
             history: [...(delivery.history || []), event],
           }
@@ -144,12 +153,13 @@ export default function Deliveries() {
       order.id === item.orderId
         ? {
             ...order,
-            paymentStatus: "Paid",
+            paymentStatus: "COD received",
             paymentMethod: "Cash on delivery",
             paymentId,
             paidAt,
             paymentReceivedAt: paidAt,
             paymentReceivedBy: user.name,
+            paymentReceiptStatus: "COD received",
           }
         : order,
     );
@@ -171,6 +181,75 @@ export default function Deliveries() {
           buyerEmail: item.buyerEmail,
           paidAt,
           receivedBy: user.name,
+          status: "Paid",
+        },
+        ...payments,
+      ]);
+    }
+  };
+  const confirmSupplierCodPaid = (item) => {
+    if (
+      !deliveryRole ||
+      !item.listingId ||
+      item.status !== "Picked up" ||
+      item.paymentMethod !== "Cash on delivery" ||
+      item.paymentStatus !== "COD pending"
+    ) {
+      return;
+    }
+    const paidAt = new Date().toISOString();
+    const paymentId = "TXN-" + Date.now().toString().slice(-8);
+    const event = {
+      status: "Supplier COD paid",
+      at: paidAt,
+      by: user.name,
+      note: `Delivery partner confirmed ₹${Number(item.paymentAmount).toLocaleString("en-IN")} cash paid to ${item.supplier} at pickup.`,
+    };
+    const nextDeliveries = items.map((delivery) =>
+      delivery.id === item.id
+        ? {
+            ...delivery,
+            paymentStatus: "COD received",
+            paymentId,
+            paymentReceivedAt: paidAt,
+            paymentReceivedBy: user.name,
+            updatedAt: paidAt,
+            history: [...(delivery.history || []), event],
+          }
+        : delivery,
+    );
+    update(nextDeliveries);
+    const nextListings = getListings().map((listing) =>
+      String(listing.id) === String(item.listingId)
+        ? {
+            ...listing,
+            status: "Paid",
+            paymentStatus: "COD received",
+            paymentId,
+            paidAt,
+            paymentReceivedAt: paidAt,
+            paymentReceivedBy: user.name,
+          }
+        : listing,
+    );
+    saveListings(nextListings);
+    const payments = getPayments();
+    if (!payments.some((payment) => String(payment.listingId) === String(item.listingId))) {
+      savePayments([
+        {
+          id: paymentId,
+          listingId: item.listingId,
+          species: item.fish,
+          supplier: item.supplier,
+          quantity: item.paymentQuantity,
+          pricePerKg: item.paymentPricePerKg,
+          amount: Number(item.paymentAmount),
+          method: "Cash on delivery",
+          reference: `COD-${item.id}`,
+          payer: item.paymentPayer || "Inventory Manager",
+          paidAt,
+          receivedBy: item.supplier,
+          collectedBy: user.name,
           status: "Paid",
         },
         ...payments,
@@ -274,6 +353,10 @@ export default function Deliveries() {
             : "Received by inventory";
           const stages = [...shipmentStages, recipientStage];
           const terminalStage = recipientStage;
+          const buyerCodAwaitingCollection =
+            Boolean(x.orderId) &&
+            x.paymentMethod === "Cash on delivery" &&
+            x.paymentStatus === "COD pending";
           return (
           <article className="delivery-card tracking-card" key={x.id}>
             <div className="delivery-id">
@@ -365,7 +448,19 @@ export default function Deliveries() {
                   {x.paymentId ? ` · ${x.paymentId}` : ""}
                 </b>
                 {x.paymentStatus === "COD pending" && (
-                  <small>₹{Number(x.paymentAmount).toLocaleString("en-IN")} due at delivery</small>
+                  <small>
+                    ₹{Number(x.paymentAmount).toLocaleString("en-IN")} due{" "}
+                    {x.listingId ? "to supplier at pickup" : "at delivery"}
+                  </small>
+                )}
+                {x.paymentStatus === "COD received" && (
+                  <small>
+                    Cash {x.listingId ? "paid to supplier" : "collected from buyer"} by{" "}
+                    {x.paymentReceivedBy || "delivery partner"}
+                    {x.paymentReceivedAt
+                      ? ` · ${new Date(x.paymentReceivedAt).toLocaleString("en-IN")}`
+                      : ""}
+                  </small>
                 )}
               </div>
             </div>
@@ -414,31 +509,63 @@ export default function Deliveries() {
             )}
             <div className="tracking-actions">
               {deliveryRole &&
-                x.orderId &&
+                x.listingId &&
                 x.paymentMethod === "Cash on delivery" &&
                 x.paymentStatus === "COD pending" &&
-                x.status === "Delivered" && (
+                x.status === "Picked up" && (
                   <button
                     className="accept-btn"
-                    onClick={() => confirmCodReceived(x)}
+                    onClick={() => confirmSupplierCodPaid(x)}
                   >
-                    <IndianRupee size={15} /> Confirm COD received · ₹
+                    <IndianRupee size={15} /> Confirm supplier cash paid · ₹
                     {Number(x.paymentAmount).toLocaleString("en-IN")}
                   </button>
                 )}
-              {deliveryRole && x.status !== "Delivered" && x.status !== terminalStage && (
+              {deliveryRole &&
+                (x.status !== "Delivered" ||
+                  (buyerCodAwaitingCollection && x.status === "Delivered")) &&
+                x.status !== terminalStage && (
                 <label>
-                  Update shipment status
+                  {buyerCodAwaitingCollection && x.status === "Delivered"
+                    ? "Update delivery / payment status"
+                    : "Update shipment status"}
                   <select
                     value={x.status}
                     onChange={(e) => changeStage(x, e.target.value)}
                   >
                     {stages
                       .filter((s) => s !== terminalStage)
-                      .map((s) => (
-                        <option key={s}>{s}</option>
-                      ))}
+                      .map((s) => {
+                        const supplierCashDue =
+                          x.listingId &&
+                          x.paymentMethod === "Cash on delivery" &&
+                          x.paymentStatus === "COD pending";
+                        const pickupIndex = shipmentStages.indexOf("Picked up");
+                        const stageIndex = shipmentStages.indexOf(s);
+                        return (
+                          <option
+                            key={s}
+                            disabled={
+                              supplierCashDue &&
+                              stageIndex > pickupIndex
+                            }
+                          >
+                            {s}
+                          </option>
+                        );
+                      })}
+                    {buyerCodAwaitingCollection && x.status === "Delivered" && (
+                      <option value="COD received">
+                        Confirm COD received · ₹
+                        {Number(x.paymentAmount).toLocaleString("en-IN")}
+                      </option>
+                    )}
                   </select>
+                  {buyerCodAwaitingCollection && x.status === "Delivered" && (
+                    <span className="pending-note">
+                      Select COD received after collecting cash from the buyer.
+                    </span>
+                  )}
                 </label>
               )}
               {inventoryRole && !x.orderId && x.status === "Delivered" && (
