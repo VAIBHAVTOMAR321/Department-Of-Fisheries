@@ -31,7 +31,31 @@ export const getListings = () => {
 
 export const saveListings = (listings) =>
   localStorage.setItem("aqua_listings", JSON.stringify(listings));
-export const getDeliveries = () => read("aqua_deliveries", initialDeliveries);
+export const getDeliveries = () => {
+  const rows = read("aqua_deliveries", initialDeliveries);
+  let changed = false;
+  const migrated = rows.map((delivery) => {
+    if (delivery.status === "Received by farmer") {
+      changed = true;
+      return {
+        ...delivery,
+        status: "Received by inventory",
+        history: (delivery.history || []).map((event) =>
+          event.status === "Received by farmer"
+            ? {
+                ...event,
+                status: "Received by inventory",
+                note: "Inventory Manager confirmed receipt of the parcel.",
+              }
+            : event,
+        ),
+      };
+    }
+    return delivery;
+  });
+  if (changed) localStorage.setItem("aqua_deliveries", JSON.stringify(migrated));
+  return migrated;
+};
 export const saveDeliveries = (deliveries) =>
   localStorage.setItem("aqua_deliveries", JSON.stringify(deliveries));
 export const getUsers = () =>

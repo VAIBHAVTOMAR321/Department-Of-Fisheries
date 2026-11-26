@@ -115,7 +115,7 @@ export default function Payments() {
       driver: "Vikram Rawat",
       driverPhone: "9876543210",
       driverEmail: "delivery@demo.com",
-      destination: x.supplierLocation || x.location || "",
+      destination: `${user.location || "Dehradun"} Central Inventory`,
       eta: "2026-11-06T17:00",
       pickup: "2026-11-05T10:00",
       coldChain: true,
@@ -473,8 +473,8 @@ export default function Payments() {
               <b>Paid</b>
             </div>
             <p>
-              Payment is complete. Assign a delivery partner so the farmer can
-              start tracking the parcel.
+              Payment is complete. Assign a delivery partner to transport the
+              purchase to the inventory receiving location.
             </p>
           </div>
           <form className="form-grid" onSubmit={assignPartner}>
@@ -516,7 +516,7 @@ export default function Payments() {
               />
             </label>
             <label className="full-field">
-              Farmer delivery address
+              Inventory receiving address
               <input
                 required
                 value={deliveryForm.destination}
@@ -564,9 +564,9 @@ export default function Payments() {
               Cold-chain transport required
             </label>
             <div className="demo-payment-warning full-field">
-              <CalendarClock size={16} /> The farmer will see this delivery
-              partner, phone number and estimated arrival time in the Deliveries
-              page.
+              <CalendarClock size={16} /> The delivery partner and Inventory
+              Manager will track the parcel and confirm final receipt in the
+              Deliveries page.
             </div>
             <button className="primary-btn full-field">
               <Truck size={15} /> Confirm assignment

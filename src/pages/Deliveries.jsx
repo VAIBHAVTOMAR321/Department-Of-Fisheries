@@ -23,7 +23,7 @@ const stages = [
   "In transit",
   "Out for delivery",
   "Delivered",
-  "Received by farmer",
+  "Received by inventory",
 ];
 const supplierRoles = ["farmer", "hatchery", "dam", "contractor"];
 export default function Deliveries() {
@@ -31,6 +31,7 @@ export default function Deliveries() {
   const farmer = supplierRoles.includes(user.role);
   const deliveryRole = user.role === "delivery";
   const manager = ["admin", "inventory"].includes(user.role);
+  const inventoryRole = user.role === "inventory";
   const [items, setItems] = useState(getDeliveries());
   const visible = useMemo(
     () =>
@@ -57,8 +58,8 @@ export default function Deliveries() {
       note:
         nextStage === "Delivered"
           ? "Delivery partner marked parcel delivered."
-          : nextStage === "Received by farmer"
-            ? "Farmer confirmed receipt of the parcel."
+          : nextStage === "Received by inventory"
+            ? "Inventory Manager confirmed receipt of the parcel."
             : `Shipment status updated to ${nextStage}.`,
     };
     update(
@@ -119,7 +120,7 @@ export default function Deliveries() {
           <b>
             {
               visible.filter((x) =>
-                ["Delivered", "Received by farmer"].includes(x.status),
+                ["Delivered", "Received by inventory"].includes(x.status),
               ).length
             }
           </b>
@@ -245,32 +246,31 @@ export default function Deliveries() {
                     onChange={(e) => changeStage(x, e.target.value)}
                   >
                     {stages
-                      .filter((s) => s !== "Received by farmer")
+                      .filter((s) => s !== "Received by inventory")
                       .map((s) => (
                         <option key={s}>{s}</option>
                       ))}
                   </select>
                 </label>
               )}
-              {farmer && x.status === "Delivered" && (
+              {inventoryRole && x.status === "Delivered" && (
                 <button
                   className="accept-btn"
-                  onClick={() => changeStage(x, "Received by farmer")}
+                  onClick={() => changeStage(x, "Received by inventory")}
                 >
-                  <PackageCheck size={15} /> Confirm parcel received
+                  <PackageCheck size={15} /> Confirm inventory received
                 </button>
               )}
-              {farmer &&
+              {inventoryRole &&
                 x.status !== "Delivered" &&
-                x.status !== "Received by farmer" && (
+                x.status !== "Received by inventory" && (
                   <span className="pending-note">
-                    Your parcel is being handled by the assigned delivery
-                    partner.
+                    Waiting for the delivery partner to mark the parcel delivered.
                   </span>
                 )}
-              {x.status === "Received by farmer" && (
+              {x.status === "Received by inventory" && (
                 <span className="received-confirmed">
-                  <CheckCircle2 size={15} /> Receipt confirmed by farmer
+                  <CheckCircle2 size={15} /> Receipt confirmed by Inventory Manager
                 </span>
               )}
               {manager && (

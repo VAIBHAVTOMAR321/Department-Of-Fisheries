@@ -5,7 +5,7 @@ export default function StatusBadge({ status }) {
   let c =
     s === "Paid" ||
     s === "Delivered" ||
-    s === "Received by farmer" ||
+    s === "Received by inventory" ||
     s === "Farmer accepted" ||
     s === "In transit" ||
     s === "Picked up"
