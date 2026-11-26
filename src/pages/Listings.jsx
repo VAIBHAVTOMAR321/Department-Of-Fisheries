@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 import {
   Plus,
   Search,
@@ -285,23 +285,23 @@ export default function Listings() {
                       </button>
                     )}
                     {x.status === "Farmer accepted" && (
-                      <button
+                      <Link
+                        to="/app/negotiations"
                         className="accept-btn"
-                        onClick={() =>
-                          window.location.assign("/fisheriesdemo/app/negotiations")
-                        }
+                        style={{ textDecoration: "none" }}
                       >
                         <Check size={14} /> Final confirmation
-                      </button>
+                      </Link>
                     )}
                     {["Payment pending", "Paid"].includes(x.status) && (
-                      <button
+                      <Link
+                        to="/app/payments"
                         className="outline-btn"
-                        onClick={() => window.location.assign("/fisheriesdemo/app/payments")}
+                        style={{ textDecoration: "none" }}
                       >
                         <IndianRupee size={14} />{" "}
                         {x.status === "Paid" ? "View payment" : "Pay now"}
-                      </button>
+                      </Link>
                     )}
                   </>
                 )}
