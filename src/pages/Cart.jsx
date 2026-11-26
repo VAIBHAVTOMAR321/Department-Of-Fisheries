@@ -100,7 +100,7 @@ function Cart({ cart, listings, user, onUpdateCart, onPlaceOrder }) {
                 </article>
               );
             })}
-            <Link className="market-continue-link" to="/shop">← Continue browsing listings</Link>
+            <Link className="market-continue-link" to="/shop">← Back to Fish Market</Link>
           </section>
 
           <aside className="market-order-summary">

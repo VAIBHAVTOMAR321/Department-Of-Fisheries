@@ -83,7 +83,7 @@ export default function DashboardLayout({ user, onLogout, onRoleChange }) {
           </span>
           <div className="brand-text">
             Department of Fisheries
-            <span>UTTARAKHAND · FISHERIES PORTAL</span>
+           
           </div>
         </Link>
         <div className="workspace-label">WORKSPACE</div>
