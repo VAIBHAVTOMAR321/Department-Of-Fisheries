@@ -323,7 +323,7 @@ function AppContent() {
 
 function App() {
   return (
-    <Router basename="/fisheriesukportal">
+    <Router basename="/fisheriesdemo">
       <AppContent />
     </Router>
   );
